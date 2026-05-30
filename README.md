@@ -1,25 +1,18 @@
 # Cyber Incident Disclosure Tracker
 
-Real Rails Batch 4
+A Real Rails Intelligence Library Proof of Concept focused on monitoring publicly disclosed cyber incidents, sector exposure, and cyber-risk intelligence patterns.
 
-## PoC Information
+## Features
 
-- POC Number: 68
-- Category: Governance & Trust
-- Architect: Shahab Ahamed
-- GitHub: shahabahmd
-
-## Project Overview
-
-Cyber Incident Disclosure Tracker transforms publicly disclosed cyber incidents into actionable intelligence.
-
-The platform tracks incident trends, sector exposure, disclosure patterns, and severity distributions through an interactive intelligence dashboard.
-
-## Data Sources
-
-- SEC EDGAR
-- GDELT
-- Synthetic Incident Dataset
+- Intelligence Dashboard
+- Risk Assessment Engine
+- Sector Exposure Analytics
+- Severity Distribution Analytics
+- Incident Timeline Tracking
+- Dynamic Filtering
+- Intelligence Summary Generation
+- Downloadable Dataset
+- Real Rails Visual Design System
 
 ## Technology Stack
 
@@ -28,33 +21,28 @@ The platform tracks incident trends, sector exposure, disclosure patterns, and s
 - Next.js
 - TypeScript
 - Tailwind CSS
-- shadcn/ui
-- Apache ECharts
+- Recharts
 
 ### Backend
 
 - FastAPI
 - Pandas
-- DuckDB
 
-## Features
+## Data Sources
 
-- Incident Intelligence Dashboard
-- Severity Analytics
-- Sector Risk Analysis
-- Timeline Visualization
-- Interactive Filters
-- Download Sample Data
+- SEC EDGAR
+- GDELT
 
-## Repository Structure
+(Current implementation uses synthetic demo data)
 
-```text
-backend/
-frontend/
-screenshots/
-docs/
-```
+## Screenshots
 
-## Status
+See `/screenshots`
 
-Phase 1 — Initialization
+## Architecture
+
+Frontend → FastAPI API → Analytics Layer → Incident Dataset
+
+## Author
+
+Shahab Ahamed

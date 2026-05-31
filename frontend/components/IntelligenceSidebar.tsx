@@ -181,7 +181,7 @@ export default function IntelligenceSidebar({ metrics, analytics }: any) {
           </div>
         </div>
 
-        {/* Who Controls The Rail */}
+        {/* Data Provenance */}
         <div>
           <h3 className="text-xs uppercase tracking-widest text-slate-500 font-semibold mb-2">
             Data Provenance
@@ -189,6 +189,29 @@ export default function IntelligenceSidebar({ metrics, analytics }: any) {
           <p className="text-slate-500 text-xs leading-relaxed">
             Derived from SEC EDGAR filings, GDELT event streams, and global disclosure regulations.
           </p>
+        </div>
+
+        {/* Who Controls The Rail */}
+        <div className="bg-[#030712] border border-slate-800/80 hover:border-cyan-500/30 transition-all duration-300 rounded-lg p-5 relative overflow-hidden group">
+          <div className="absolute top-0 left-0 w-1 h-full bg-cyan-500/30 group-hover:bg-cyan-400 transition-colors shadow-[0_0_10px_rgba(56,189,248,0.5)]"></div>
+          <h3 className="text-xs uppercase tracking-widest text-cyan-500 font-semibold mb-3 flex items-center">
+            <span className="w-2 h-2 rounded-full bg-cyan-500 mr-2"></span>
+            Who Controls The Rail
+          </h3>
+          <p className="text-slate-300 text-xs leading-relaxed mb-4 italic">
+            “SEC EDGAR filings, regulatory disclosures, and global event monitoring systems determine how cyber incidents become publicly visible.”
+          </p>
+          <div className="flex flex-wrap gap-2">
+            <span className="px-2 py-1 text-[9px] font-bold tracking-widest text-cyan-400 bg-cyan-500/10 border border-cyan-500/30 rounded-full">
+              SEC EDGAR
+            </span>
+            <span className="px-2 py-1 text-[9px] font-bold tracking-widest text-cyan-400 bg-cyan-500/10 border border-cyan-500/30 rounded-full">
+              GDELT
+            </span>
+            <span className="px-2 py-1 text-[9px] font-bold tracking-widest text-cyan-400 bg-cyan-500/10 border border-cyan-500/30 rounded-full">
+              Disclosure Feeds
+            </span>
+          </div>
         </div>
       </div>
 

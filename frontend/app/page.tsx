@@ -217,10 +217,10 @@ export default function Home() {
         </div>
 
         {/* Main Grid Layout */}
-        <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
+        <div className="grid grid-cols-1 xl:grid-cols-10 gap-6">
           
           {/* Main Stage */}
-          <div className="xl:col-span-8 flex flex-col space-y-8">
+          <div className="xl:col-span-7 flex flex-col space-y-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <SeverityChart data={analytics.severity_breakdown} />
               <SectorChart data={analytics.sector_breakdown} />
@@ -288,7 +288,7 @@ export default function Home() {
           </div>
 
           {/* Sidebar */}
-          <div className="xl:col-span-4 h-full">
+          <div className="xl:col-span-3 h-full">
             <IntelligenceSidebar metrics={metrics} analytics={analytics} />
           </div>
         </div>

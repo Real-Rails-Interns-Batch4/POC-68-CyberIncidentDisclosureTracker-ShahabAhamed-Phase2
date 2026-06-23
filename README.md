@@ -65,13 +65,12 @@ The intelligence layer derives analytical insights from incident data and transf
 
 # Data Sources
 
-The project architecture is inspired by public cyber disclosure ecosystems including:
+The project architecture integrates with public cyber disclosure ecosystems, currently supporting configuration for:
 
-* SEC EDGAR Filings
-* GDELT Event Streams
-* Global Disclosure Reports
+* **SEC EDGAR Filings**: Regulatory disclosure source used to track official cyber incident filings (e.g., 8-K forms) from publicly traded companies.
+* **GDELT Event Streams**: Global event and news intelligence source used to monitor worldwide media for cyber incidents and data breaches in real-time.
 
-> Current implementation uses synthetic demo datasets for simulation purposes.
+> Current implementation uses synthetic demo datasets for simulation purposes, but the architecture supports live ingestion from the configured sources.
 
 ---
 
@@ -110,6 +109,20 @@ Frontend → FastAPI API → Analytics Layer → Incident Dataset
 ---
 
 # Setup Instructions
+
+## Environment Configuration
+
+The application uses environment variables to configure intelligence data sources. To set this up:
+
+1. Copy the `.env.example` file to `.env.local`:
+   ```bash
+   cp .env.example .env.local
+   ```
+2. Update `.env.local` with your configuration.
+
+**Configurable Sources:**
+- **SEC EDGAR:** Requires `SEC_EDGAR_API_URL` and `SEC_EDGAR_USER_AGENT` for fetching official incident filings.
+- **GDELT:** Requires `GDELT_API_URL` and `GDELT_QUERY` for tracking news-based incident reports.
 
 ## Backend
 

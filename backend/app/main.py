@@ -4,11 +4,17 @@ import urllib.request
 import time
 import requests
 import logging
+import os
+from pathlib import Path
+from dotenv import load_dotenv
+
+# Load environment variables from .env.local if present
+load_dotenv(dotenv_path=Path(__file__).parent.parent.parent / ".env.local")
+load_dotenv() # Fallback to .env
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 from fastapi import Query
-from pathlib import Path
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 app = FastAPI(title="Cyber Incident Disclosure Tracker")
@@ -24,9 +30,15 @@ DATA_FILE = Path(__file__).parent.parent / "mock_data" / "incidents.json"
 
 
 def fetch_live_sec_data():
-    url = "https://data.sec.gov/submissions/CIK0000320193.json"
-    headers = {"User-Agent": "CyberRailTracker/1.0 (admin@example.com)"}
+    url = os.getenv("SEC_EDGAR_API_URL", "https://data.sec.gov/submissions/CIK0000320193.json")
+    user_agent = os.getenv("SEC_EDGAR_USER_AGENT", "CyberRailTracker/1.0 (admin@example.com)")
+    headers = {"User-Agent": user_agent}
     
+    # Check GDELT config as well just to log if it's available (placeholder logic)
+    gdelt_url = os.getenv("GDELT_API_URL")
+    if gdelt_url:
+        logger.info("GDELT API configuration found, ready for integration.")
+
     response = requests.get(url, headers=headers, timeout=5)
     response.raise_for_status()
     data = response.json()

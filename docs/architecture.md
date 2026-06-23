@@ -110,12 +110,17 @@ User Insights
 Current Implementation:
 
 * Synthetic demo dataset
+* Live SEC EDGAR fetch configuration (requires environment variables)
+
+Intelligence Sources:
+
+* **SEC EDGAR**: Acts as the primary regulatory disclosure source. Configured via `SEC_EDGAR_API_URL` and `SEC_EDGAR_USER_AGENT` in `.env.local`.
+* **GDELT**: Acts as a global event and news intelligence source. Configured via `GDELT_API_URL` and `GDELT_QUERY` in `.env.local`.
 
 Future Integration:
 
-* SEC EDGAR
-* GDELT
 * Live cyber disclosure feeds
+* Deep SEC EDGAR Parsing (e.g., text extraction from 8-Ks)
 
 ---
 

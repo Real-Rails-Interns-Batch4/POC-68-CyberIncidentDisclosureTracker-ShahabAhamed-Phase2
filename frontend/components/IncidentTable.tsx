@@ -2,7 +2,7 @@
 
 import React from "react";
 
-export default function IncidentTable({ incidents }: any) {
+export default function IncidentTable({ incidents, onRowClick }: any) {
 
   const getSeverityBadge = (severity: string) => {
     switch (severity?.toLowerCase()) {
@@ -125,7 +125,8 @@ export default function IncidentTable({ incidents }: any) {
 
               <tr
                 key={incident.id}
-                className="hover:bg-cyan-500/5 transition-all duration-200 group cursor-default"
+                onClick={() => onRowClick && onRowClick(incident)}
+                className="hover:bg-cyan-500/10 transition-all duration-200 group cursor-pointer"
               >
 
                 {/* Company */}

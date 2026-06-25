@@ -1,6 +1,6 @@
 # Cyber Incident Disclosure Tracker
 
-A Real Rails Intelligence Library Proof of Concept focused on monitoring publicly disclosed cyber incidents, sector exposure, and cyber-risk intelligence patterns across critical infrastructure ecosystems.
+A Infocreon Internship – Cyber Incident Disclosure Tracker Proof of Concept focused on monitoring publicly disclosed cyber incidents, sector exposure, and cyber-risk intelligence patterns across critical infrastructure ecosystems.
 
 ---
 
@@ -206,4 +206,4 @@ Validated areas include:
 
 Shahab Ahamed
 
-Real Rails Batch 4 — Intelligence Library PoC
+Infocreon Internship Batch 4 — Intelligence Library PoC

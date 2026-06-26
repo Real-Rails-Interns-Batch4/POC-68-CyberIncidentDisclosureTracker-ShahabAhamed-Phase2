@@ -1,0 +1,4708 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+.env.example
+.gitignore
+backend/app/main.py
+backend/app/mock_data.py
+backend/app/models.py
+backend/mock_data/generate_data.py
+backend/mock_data/incidents.json
+backend/requirements.txt
+docs/architecture.md
+docs/UAT_CHECKLIST.md
+docs/VAR_REPORT.md
+frontend/.gitignore
+frontend/AGENTS.md
+frontend/app/favicon.ico
+frontend/app/globals.css
+frontend/app/layout.tsx
+frontend/app/page.tsx
+frontend/CLAUDE.md
+frontend/components/ArchitectModal.tsx
+frontend/components/IncidentTable.tsx
+frontend/components/IntelligenceSidebar.tsx
+frontend/components/SectorChart.tsx
+frontend/components/SeverityChart.tsx
+frontend/components/TrendChart.tsx
+frontend/eslint.config.mjs
+frontend/lib/api.ts
+frontend/next.config.ts
+frontend/package.json
+frontend/postcss.config.mjs
+frontend/public/file.svg
+frontend/public/globe.svg
+frontend/public/next.svg
+frontend/public/vercel.svg
+frontend/public/window.svg
+frontend/README.md
+frontend/tsconfig.json
+README.md
+screenshots/dashboard-overview.png
+screenshots/download-feature.png
+screenshots/filters-working.png
+screenshots/incident-log.png
+screenshots/intelligence-summary.png
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path=".env.example">
+# Cyber Incident Disclosure Tracker - Environment Configuration
+
+# SEC EDGAR Integration
+# API URL for fetching recent SEC filings
+SEC_EDGAR_API_URL=https://data.sec.gov/submissions/CIK0000320193.json
+# User-Agent string required by SEC EDGAR API (Format: AppName/Version (ContactEmail))
+SEC_EDGAR_USER_AGENT=CyberRailTracker/1.0 (admin@example.com)
+
+# GDELT Integration
+# Base API URL for GDELT Doc 2.0 API
+GDELT_API_URL=https://api.gdeltproject.org/api/v2/doc/doc
+# Query string for relevant cyber intelligence
+GDELT_QUERY="cyber incident OR data breach"
+
+# Database/API settings (if applicable)
+# BACKEND_URL=http://localhost:8000
+</file>
+
+<file path="backend/app/mock_data.py">
+
+</file>
+
+<file path="backend/app/models.py">
+
+</file>
+
+<file path="backend/mock_data/generate_data.py">
+import json
+import random
+from datetime import datetime, timedelta
+
+companies = [
+    "Microsoft", "Google", "Amazon", "Infosys", "IBM",
+    "HSBC", "JP Morgan", "Toyota", "Tesla", "Cisco",
+    "Oracle", "Meta", "Intel", "Nvidia", "TCS"
+]
+
+sectors = [
+    "Technology",
+    "Finance",
+    "Healthcare",
+    "Energy",
+    "Retail",
+    "Government",
+    "Telecommunications"
+]
+
+incident_types = [
+    "Data Breach",
+    "Ransomware",
+    "Phishing",
+    "Credential Leak",
+    "DDoS",
+    "Supply Chain Attack",
+    "Insider Threat"
+]
+
+severities = [
+    "Low",
+    "Medium",
+    "High",
+    "Critical"
+]
+
+countries = [
+    "USA",
+    "India",
+    "UK",
+    "Germany",
+    "Japan",
+    "Canada",
+    "Australia"
+]
+
+data = []
+
+for i in range(1, 101):
+    data.append({
+        "id": i,
+        "company": random.choice(companies),
+        "sector": random.choice(sectors),
+        "incident_type": random.choice(incident_types),
+        "severity": random.choice(severities),
+        "country": random.choice(countries),
+        "date": (
+            datetime.now() -
+            timedelta(days=random.randint(1, 365))
+        ).strftime("%Y-%m-%d")
+    })
+
+with open("../mock_data/incidents.json", "w") as f:
+    json.dump(data, f, indent=2)
+
+print("Generated 100 incidents")
+</file>
+
+<file path="docs/UAT_CHECKLIST.md">
+# User Acceptance Testing (UAT) Checklist
+
+## Cyber Incident Disclosure Tracker
+
+---
+
+# 1. Functional Tests
+
+| Test ID | Feature          | Scenario                                                | Expected Result                                                                                                            | Status |
+| :------ | :--------------- | :------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------- | :----- |
+| UAT-F01 | API Integration  | Initial page load                                       | Metrics, Analytics, and Incident data are fetched and displayed successfully without errors.                               | [x]    |
+| UAT-F02 | Filters          | Select a specific Sector (e.g., Technology)             | The Incident Log Table updates to show only Technology incidents.                                                          | [x]    |
+| UAT-F03 | Filters          | Select a specific Risk Severity (e.g., High)            | The Incident Log Table updates to show only High severity incidents.                                                       | [x]    |
+| UAT-F04 | Filters          | Combine Sector and Severity filters                     | The Incident Log Table updates to match both criteria (e.g., Finance & Critical).                                          | [x]    |
+| UAT-F05 | Download Dataset | Click the "Export Dataset" button                       | A new tab opens and successfully initiates the download of the incident dataset from the backend `/api/download` endpoint. | [x]    |
+| UAT-F06 | Filters          | Clear filters (Select "All Sectors" / "All Severities") | The Incident Log Table resets to show the full list of incidents.                                                          | [x]    |
+
+---
+
+# 2. UI Tests
+
+| Test ID  | Feature              | Scenario                        | Expected Result                                                                                                                                              | Status |
+| :------- | :------------------- | :------------------------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------- | :----- |
+| UAT-UI01 | KPI Cards            | Hover over KPI cards            | Card translates slightly upwards (`-translate-y-1`), borders glow with their respective semantic colors, and icons scale/animate smoothly.                   | [x]    |
+| UAT-UI02 | Intelligence Summary | View dynamically generated text | Highlights (e.g., top sector, active month) appear properly bolded in white, standing out from the slate text.                                               | [x]    |
+| UAT-UI03 | Charts               | Hover over charts               | Charts display custom glassmorphic tooltips containing exact data values; container box-shadow glows cyan.                                                   | [x]    |
+| UAT-UI04 | Incident Log Table   | Hover over table rows           | Entire row highlights subtly (cyan/slate), and text colors shift to active states.                                                                           | [x]    |
+| UAT-UI05 | Intelligence Sidebar | View Cyber Risk Index           | Progress bar correctly fills according to the calculated risk score. The corresponding status badge uses the correct semantic color (green, yellow, or red). | [x]    |
+
+---
+
+# 3. Responsiveness Tests
+
+| Test ID | Feature            | Scenario             | Expected Result                                                                                                                 | Status |
+| :------ | :----------------- | :------------------- | :------------------------------------------------------------------------------------------------------------------------------ | :----- |
+| UAT-R01 | Layout             | View on Mobile (sm)  | KPI cards stack vertically (1 column), charts stack vertically, sidebar stacks below main stage. Header typography scales down. | [x]    |
+| UAT-R02 | Incident Log Table | View on Mobile (sm)  | Table container allows horizontal scrolling (`overflow-x-auto`) to prevent layout breaking on small screens.                    | [x]    |
+| UAT-R03 | Layout             | View on Tablet (md)  | KPI cards switch to a 2-column grid. Charts are visible and responsive.                                                         | [x]    |
+| UAT-R04 | Layout             | View on Desktop (xl) | Main stage (8 columns) and Sidebar (4 columns) sit side-by-side perfectly. KPI cards are 4 columns.                             | [x]    |
+
+---
+
+# 4. Data Validation Tests
+
+| Test ID | Feature              | Scenario                    | Expected Result                                                                                                                | Status |
+| :------ | :------------------- | :-------------------------- | :----------------------------------------------------------------------------------------------------------------------------- | :----- |
+| UAT-D01 | Intelligence Summary | Calculate Top Sector        | The sector displayed as "most targeted" exactly matches the sector with the highest count in the `SectorChart`.                | [x]    |
+| UAT-D02 | Intelligence Summary | Calculate Most Active Month | The month displayed matches the peak node on the `Incident Timeline` chart.                                                    | [x]    |
+| UAT-D03 | Cyber Risk Index     | Validate Risk Score Logic   | The score correctly reflects the sum of its conditions and caps at 100.                                                        | [x]    |
+| UAT-D04 | Incident Log Table   | Validate Badges             | "Critical" uses a red badge, "High" uses orange, "Medium" uses yellow, "Low" uses green. Text accurately maps to backend data. | [x]    |
+| UAT-D05 | KPI Cards            | Validate Total Incidents    | The "Total Incidents" number matches the exact length of the incident array fetched on load.                                   | [x]    |
+
+---
+
+# 5. Edge Cases
+
+| Test ID | Feature              | Scenario                                      | Expected Result                                                                                 | Status |
+| :------ | :------------------- | :-------------------------------------------- | :---------------------------------------------------------------------------------------------- | :----- |
+| UAT-E01 | Initialization       | Slow network connection                       | The loading state screen is displayed until both `metrics` and `analytics` are loaded.          | [x]    |
+| UAT-E02 | Filters              | Select a filter combination with zero results | Table body clears and displays the empty state message: "No incidents found matching criteria." | [x]    |
+| UAT-E03 | Cyber Risk Index     | Backend returns 0 incidents                   | Score safely calculates without NaN errors, displaying a safe low-risk state.                   | [x]    |
+| UAT-E04 | Intelligence Summary | Backend returns malformed analytics           | Fallbacks trigger properly (e.g., displaying "N/A" instead of breaking the app).                | [x]    |
+| UAT-E05 | Incident Log Table   | Long company names                            | Table cells truncate cleanly without breaking the table layout.                                 | [x]    |
+
+---
+
+# Final UAT Verdict
+
+## ✅ PASS
+
+The Cyber Incident Disclosure Tracker successfully passed:
+
+* Functional Validation
+* Visualization Validation
+* Responsiveness Validation
+* Data Validation
+* Edge Case Testing
+
+The platform is production-ready and meets enterprise-grade intelligence dashboard standards.
+</file>
+
+<file path="docs/VAR_REPORT.md">
+1. VAR Score
+94 / 100 An exceptional implementation of the intelligence terminal aesthetic. High information density combined with premium visual execution.
+
+2. Strengths
+Intelligence Presentation: The integration of the "Intelligence Summary," dynamic "Threat Outlook," and "Cyber Risk Index" flawlessly shifts the paradigm from "data display" to "actionable intelligence." The system explains what the data means.
+Visual Consistency: Strict adherence to the 030712 / 0B1117 background hierarchy. The glassmorphism, subtle cyan glows, and slate-800 borders create a cohesive, cinematic Palantir/Bloomberg-esque environment.
+Information Hierarchy: The top-down reading flow is excellent. Header (Context) → KPIs (Metrics) → Intelligence Summary (Insights) → Charts (Analytics) → Log Table (Raw Data). The sidebar perfectly balances the main stage.
+Color Usage: Highly disciplined. The UI relies primarily on slate/cyan for structural elements, reserving semantic colors (Red, Orange, Yellow, Green) strictly for risk, severity, and active status indicators.
+Typography: Excellent use of tracking (letter-spacing), capitalization, and varied font weights to distinguish metadata labels from primary data points without relying heavily on color variation.
+3. Weaknesses
+Feedback States: The UI lacks explicit loading indicators (e.g., skeleton loaders or a subtle pulsing overlay over charts/tables) when filters are applied, which can momentarily confuse users if data fetches experience latency.
+Mobile Table Readability: While responsive, horizontal scrolling on a data-dense table (IncidentTable.tsx) on mobile devices is a suboptimal UX pattern for analysts reading on the go.
+Empty States: The platform currently renders a basic text message if filters return no results in the table, and charts may render awkwardly if data is completely nullified by strict filtering.
+4. High Priority Improvements
+Mobile-First Incident Cards: Convert the standard IncidentTable into a stacked card layout when viewed on sm and md breakpoints. Hide the table and show a list of cards to prevent horizontal scrolling on mobile.
+Interactive Loading Overlays: Implement a backdrop blur with a glowing cyan loading spinner over the main stage container whenever sectorFilter or severityFilter triggers a data refresh.
+Chart Empty States: Design premium, glassmorphic "No Data Available" states for the Severity, Sector, and Trend charts when filters yield zero results, matching the dark aesthetic.
+5. Medium Priority Improvements
+Tooltip Explanations: Add a subtle (?) hover icon next to the "Cyber Risk Index" and "Intelligence Summary" titles that displays a tooltip explaining the underlying calculation logic (e.g., "Score based on critical incident volume and frequency").
+Micro-Interactions: Add click-to-copy functionality to the Company names in the incident table, accompanied by a brief "Copied to clipboard" toast notification.
+Sticky Table Header: Ensure the IncidentTable container has a constrained height on desktop with a fully opaque, sticky thead to maintain context when scrolling through hundreds of records.
+6. Final Verdict
+PASS This dashboard is highly production-ready from a UI/UX standpoint. It successfully delivers a premium, immersive, and highly analytical user experience that perfectly aligns with modern cyber intelligence requirements.
+</file>
+
+<file path="frontend/.gitignore">
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env*
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+</file>
+
+<file path="frontend/AGENTS.md">
+<!-- BEGIN:nextjs-agent-rules -->
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
+<!-- END:nextjs-agent-rules -->
+</file>
+
+<file path="frontend/CLAUDE.md">
+@AGENTS.md
+</file>
+
+<file path="frontend/components/ArchitectModal.tsx">
+"use client";
+
+import React, { useEffect, useState } from "react";
+
+interface ArchitectModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export default function ArchitectModal({ isOpen, onClose }: ArchitectModalProps) {
+  const [showModal, setShowModal] = useState(isOpen);
+
+  useEffect(() => {
+    if (isOpen) {
+      setShowModal(true);
+    } else {
+      const timer = setTimeout(() => setShowModal(false), 300);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
+
+  if (!showModal) return null;
+
+  return (
+    <div className={`fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-300 ${isOpen ? "opacity-100" : "opacity-0"}`}>
+      <div 
+        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        onClick={onClose}
+      />
+      
+      <div className={`relative w-full max-w-md bg-[#0B1117] border border-cyan-500/30 rounded-xl shadow-[0_0_40px_rgba(56,189,248,0.15)] overflow-hidden transition-all duration-300 transform ${isOpen ? "scale-100 translate-y-0" : "scale-95 translate-y-4"}`}>
+        <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 blur-[50px] rounded-full pointer-events-none" />
+        
+        <div className="flex items-center justify-between p-5 border-b border-slate-800">
+          <div className="flex items-center space-x-2">
+            <svg className="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <h2 className="text-lg font-bold text-white tracking-tight">Architect Information</h2>
+          </div>
+          <button 
+            onClick={onClose}
+            className="text-slate-500 hover:text-white transition-colors"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <div className="p-6 space-y-4">
+          <div className="space-y-1">
+            <p className="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Architect</p>
+            <p className="text-white font-medium text-sm">Shahab Ahamed</p>
+          </div>
+          
+          <div className="space-y-1">
+            <p className="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Program</p>
+            <p className="text-cyan-400 font-medium text-sm">Infocreon Internship</p>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1">
+              <p className="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Batch</p>
+              <p className="text-white font-medium text-sm">Batch 4</p>
+            </div>
+            <div className="space-y-1">
+              <p className="text-[10px] uppercase tracking-widest text-slate-500 font-bold">POC</p>
+              <p className="text-white font-medium text-sm">POC-68</p>
+            </div>
+          </div>
+          
+          <div className="space-y-1">
+            <p className="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Project</p>
+            <p className="text-white font-medium text-sm">Cyber Incident Disclosure Tracker</p>
+          </div>
+          
+          <div className="space-y-2 pt-2 border-t border-slate-800/50">
+            <p className="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Technology Stack</p>
+            <div className="flex flex-wrap gap-2">
+              <span className="px-2.5 py-1 text-[10px] font-bold tracking-widest text-cyan-400 bg-cyan-500/10 border border-cyan-500/30 rounded-md">Next.js</span>
+              <span className="px-2.5 py-1 text-[10px] font-bold tracking-widest text-cyan-400 bg-cyan-500/10 border border-cyan-500/30 rounded-md">FastAPI</span>
+              <span className="px-2.5 py-1 text-[10px] font-bold tracking-widest text-cyan-400 bg-cyan-500/10 border border-cyan-500/30 rounded-md">Tailwind CSS</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+</file>
+
+<file path="frontend/eslint.config.mjs">
+import { defineConfig, globalIgnores } from "eslint/config";
+import nextVitals from "eslint-config-next/core-web-vitals";
+import nextTs from "eslint-config-next/typescript";
+
+const eslintConfig = defineConfig([
+  ...nextVitals,
+  ...nextTs,
+  // Override default ignores of eslint-config-next.
+  globalIgnores([
+    // Default ignores of eslint-config-next:
+    ".next/**",
+    "out/**",
+    "build/**",
+    "next-env.d.ts",
+  ]),
+]);
+
+export default eslintConfig;
+</file>
+
+<file path="frontend/lib/api.ts">
+const API_URL = "http://127.0.0.1:8000";
+
+export async function getMetrics() {
+  const response = await fetch(`${API_URL}/api/metrics`);
+  return response.json();
+}
+
+export async function getAnalytics() {
+  const response = await fetch(`${API_URL}/api/analytics`);
+  return response.json();
+}
+export async function getIncidents(
+  sector?: string,
+  severity?: string
+) {
+  let url = `${API_URL}/api/incidents`;
+
+  const params = new URLSearchParams();
+
+  if (sector) params.append("sector", sector);
+  if (severity) params.append("severity", severity);
+
+  if (params.toString()) {
+    url += `?${params.toString()}`;
+  }
+
+  const response = await fetch(url);
+
+  return response.json();
+}
+</file>
+
+<file path="frontend/next.config.ts">
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  /* config options here */
+};
+
+export default nextConfig;
+</file>
+
+<file path="frontend/package.json">
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "axios": "^1.16.1",
+    "echarts": "^6.1.0",
+    "echarts-for-react": "^3.0.6",
+    "next": "16.2.6",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.6",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
+</file>
+
+<file path="frontend/postcss.config.mjs">
+const config = {
+  plugins: {
+    "@tailwindcss/postcss": {},
+  },
+};
+
+export default config;
+</file>
+
+<file path="frontend/public/file.svg">
+<svg fill="none" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path d="M14.5 13.5V5.41a1 1 0 0 0-.3-.7L9.8.29A1 1 0 0 0 9.08 0H1.5v13.5A2.5 2.5 0 0 0 4 16h8a2.5 2.5 0 0 0 2.5-2.5m-1.5 0v-7H8v-5H3v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1M9.5 5V2.12L12.38 5zM5.13 5h-.62v1.25h2.12V5zm-.62 3h7.12v1.25H4.5zm.62 3h-.62v1.25h7.12V11z" clip-rule="evenodd" fill="#666" fill-rule="evenodd"/></svg>
+</file>
+
+<file path="frontend/public/globe.svg">
+<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><g clip-path="url(#a)"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.27 14.1a6.5 6.5 0 0 0 3.67-3.45q-1.24.21-2.7.34-.31 1.83-.97 3.1M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m.48-1.52a7 7 0 0 1-.96 0H7.5a4 4 0 0 1-.84-1.32q-.38-.89-.63-2.08a40 40 0 0 0 3.92 0q-.25 1.2-.63 2.08a4 4 0 0 1-.84 1.31zm2.94-4.76q1.66-.15 2.95-.43a7 7 0 0 0 0-2.58q-1.3-.27-2.95-.43a18 18 0 0 1 0 3.44m-1.27-3.54a17 17 0 0 1 0 3.64 39 39 0 0 1-4.3 0 17 17 0 0 1 0-3.64 39 39 0 0 1 4.3 0m1.1-1.17q1.45.13 2.69.34a6.5 6.5 0 0 0-3.67-3.44q.65 1.26.98 3.1M8.48 1.5l.01.02q.41.37.84 1.31.38.89.63 2.08a40 40 0 0 0-3.92 0q.25-1.2.63-2.08a4 4 0 0 1 .85-1.32 7 7 0 0 1 .96 0m-2.75.4a6.5 6.5 0 0 0-3.67 3.44 29 29 0 0 1 2.7-.34q.31-1.83.97-3.1M4.58 6.28q-1.66.16-2.95.43a7 7 0 0 0 0 2.58q1.3.27 2.95.43a18 18 0 0 1 0-3.44m.17 4.71q-1.45-.12-2.69-.34a6.5 6.5 0 0 0 3.67 3.44q-.65-1.27-.98-3.1" fill="#666"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h16v16H0z"/></clipPath></defs></svg>
+</file>
+
+<file path="frontend/public/next.svg">
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 394 80"><path fill="#000" d="M262 0h68.5v12.7h-27.2v66.6h-13.6V12.7H262V0ZM149 0v12.7H94v20.4h44.3v12.6H94v21h55v12.6H80.5V0h68.7zm34.3 0h-17.8l63.8 79.4h17.9l-32-39.7 32-39.6h-17.9l-23 28.6-23-28.6zm18.3 56.7-9-11-27.1 33.7h17.8l18.3-22.7z"/><path fill="#000" d="M81 79.3 17 0H0v79.3h13.6V17l50.2 62.3H81Zm252.6-.4c-1 0-1.8-.4-2.5-1s-1.1-1.6-1.1-2.6.3-1.8 1-2.5 1.6-1 2.6-1 1.8.3 2.5 1a3.4 3.4 0 0 1 .6 4.3 3.7 3.7 0 0 1-3 1.8zm23.2-33.5h6v23.3c0 2.1-.4 4-1.3 5.5a9.1 9.1 0 0 1-3.8 3.5c-1.6.8-3.5 1.3-5.7 1.3-2 0-3.7-.4-5.3-1s-2.8-1.8-3.7-3.2c-.9-1.3-1.4-3-1.4-5h6c.1.8.3 1.6.7 2.2s1 1.2 1.6 1.5c.7.4 1.5.5 2.4.5 1 0 1.8-.2 2.4-.6a4 4 0 0 0 1.6-1.8c.3-.8.5-1.8.5-3V45.5zm30.9 9.1a4.4 4.4 0 0 0-2-3.3 7.5 7.5 0 0 0-4.3-1.1c-1.3 0-2.4.2-3.3.5-.9.4-1.6 1-2 1.6a3.5 3.5 0 0 0-.3 4c.3.5.7.9 1.3 1.2l1.8 1 2 .5 3.2.8c1.3.3 2.5.7 3.7 1.2a13 13 0 0 1 3.2 1.8 8.1 8.1 0 0 1 3 6.5c0 2-.5 3.7-1.5 5.1a10 10 0 0 1-4.4 3.5c-1.8.8-4.1 1.2-6.8 1.2-2.6 0-4.9-.4-6.8-1.2-2-.8-3.4-2-4.5-3.5a10 10 0 0 1-1.7-5.6h6a5 5 0 0 0 3.5 4.6c1 .4 2.2.6 3.4.6 1.3 0 2.5-.2 3.5-.6 1-.4 1.8-1 2.4-1.7a4 4 0 0 0 .8-2.4c0-.9-.2-1.6-.7-2.2a11 11 0 0 0-2.1-1.4l-3.2-1-3.8-1c-2.8-.7-5-1.7-6.6-3.2a7.2 7.2 0 0 1-2.4-5.7 8 8 0 0 1 1.7-5 10 10 0 0 1 4.3-3.5c2-.8 4-1.2 6.4-1.2 2.3 0 4.4.4 6.2 1.2 1.8.8 3.2 2 4.3 3.4 1 1.4 1.5 3 1.5 5h-5.8z"/></svg>
+</file>
+
+<file path="frontend/public/vercel.svg">
+<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1155 1000"><path d="m577.3 0 577.4 1000H0z" fill="#fff"/></svg>
+</file>
+
+<file path="frontend/public/window.svg">
+<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill-rule="evenodd" clip-rule="evenodd" d="M1.5 2.5h13v10a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1zM0 1h16v11.5a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 0 12.5zm3.75 4.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5M7 4.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0m1.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5" fill="#666"/></svg>
+</file>
+
+<file path="frontend/README.md">
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+
+## Getting Started
+
+First, run the development server:
+
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+
+## Learn More
+
+To learn more about Next.js, take a look at the following resources:
+
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+</file>
+
+<file path="frontend/tsconfig.json">
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts",
+    "**/*.mts"
+  ],
+  "exclude": ["node_modules"]
+}
+</file>
+
+<file path="backend/mock_data/incidents.json">
+[
+  {
+    "id": 1,
+    "company": "Infosys",
+    "sector": "Telecommunications",
+    "incident_type": "Credential Leak",
+    "severity": "Critical",
+    "country": "Canada",
+    "date": "2025-07-31"
+  },
+  {
+    "id": 2,
+    "company": "IBM",
+    "sector": "Energy",
+    "incident_type": "Phishing",
+    "severity": "Low",
+    "country": "India",
+    "date": "2025-09-06"
+  },
+  {
+    "id": 3,
+    "company": "Nvidia",
+    "sector": "Technology",
+    "incident_type": "Supply Chain Attack",
+    "severity": "Critical",
+    "country": "UK",
+    "date": "2025-12-06"
+  },
+  {
+    "id": 4,
+    "company": "HSBC",
+    "sector": "Retail",
+    "incident_type": "Phishing",
+    "severity": "Critical",
+    "country": "Canada",
+    "date": "2025-10-17"
+  },
+  {
+    "id": 5,
+    "company": "Intel",
+    "sector": "Energy",
+    "incident_type": "Phishing",
+    "severity": "High",
+    "country": "Canada",
+    "date": "2026-03-02"
+  },
+  {
+    "id": 6,
+    "company": "Infosys",
+    "sector": "Finance",
+    "incident_type": "Supply Chain Attack",
+    "severity": "High",
+    "country": "Canada",
+    "date": "2026-04-18"
+  },
+  {
+    "id": 7,
+    "company": "Intel",
+    "sector": "Technology",
+    "incident_type": "Credential Leak",
+    "severity": "Low",
+    "country": "UK",
+    "date": "2025-09-26"
+  },
+  {
+    "id": 8,
+    "company": "HSBC",
+    "sector": "Healthcare",
+    "incident_type": "Supply Chain Attack",
+    "severity": "Critical",
+    "country": "Germany",
+    "date": "2026-05-16"
+  },
+  {
+    "id": 9,
+    "company": "Intel",
+    "sector": "Government",
+    "incident_type": "Data Breach",
+    "severity": "High",
+    "country": "UK",
+    "date": "2025-12-28"
+  },
+  {
+    "id": 10,
+    "company": "Intel",
+    "sector": "Technology",
+    "incident_type": "DDoS",
+    "severity": "Critical",
+    "country": "Australia",
+    "date": "2025-09-14"
+  },
+  {
+    "id": 11,
+    "company": "Oracle",
+    "sector": "Government",
+    "incident_type": "Ransomware",
+    "severity": "Low",
+    "country": "India",
+    "date": "2026-01-02"
+  },
+  {
+    "id": 12,
+    "company": "Toyota",
+    "sector": "Finance",
+    "incident_type": "Credential Leak",
+    "severity": "Low",
+    "country": "Germany",
+    "date": "2026-04-14"
+  },
+  {
+    "id": 13,
+    "company": "HSBC",
+    "sector": "Healthcare",
+    "incident_type": "Credential Leak",
+    "severity": "Medium",
+    "country": "Australia",
+    "date": "2025-05-30"
+  },
+  {
+    "id": 14,
+    "company": "Intel",
+    "sector": "Finance",
+    "incident_type": "Phishing",
+    "severity": "Medium",
+    "country": "Japan",
+    "date": "2025-07-12"
+  },
+  {
+    "id": 15,
+    "company": "Toyota",
+    "sector": "Telecommunications",
+    "incident_type": "Data Breach",
+    "severity": "High",
+    "country": "Canada",
+    "date": "2026-05-01"
+  },
+  {
+    "id": 16,
+    "company": "Intel",
+    "sector": "Healthcare",
+    "incident_type": "Phishing",
+    "severity": "Medium",
+    "country": "UK",
+    "date": "2026-03-16"
+  },
+  {
+    "id": 17,
+    "company": "Amazon",
+    "sector": "Healthcare",
+    "incident_type": "DDoS",
+    "severity": "High",
+    "country": "Australia",
+    "date": "2026-02-09"
+  },
+  {
+    "id": 18,
+    "company": "Meta",
+    "sector": "Healthcare",
+    "incident_type": "Credential Leak",
+    "severity": "Low",
+    "country": "Germany",
+    "date": "2026-03-06"
+  },
+  {
+    "id": 19,
+    "company": "JP Morgan",
+    "sector": "Technology",
+    "incident_type": "Supply Chain Attack",
+    "severity": "Critical",
+    "country": "UK",
+    "date": "2025-11-23"
+  },
+  {
+    "id": 20,
+    "company": "TCS",
+    "sector": "Retail",
+    "incident_type": "Insider Threat",
+    "severity": "Critical",
+    "country": "India",
+    "date": "2025-10-05"
+  },
+  {
+    "id": 21,
+    "company": "Microsoft",
+    "sector": "Telecommunications",
+    "incident_type": "DDoS",
+    "severity": "High",
+    "country": "USA",
+    "date": "2025-09-20"
+  },
+  {
+    "id": 22,
+    "company": "HSBC",
+    "sector": "Finance",
+    "incident_type": "Phishing",
+    "severity": "Critical",
+    "country": "Japan",
+    "date": "2026-03-06"
+  },
+  {
+    "id": 23,
+    "company": "HSBC",
+    "sector": "Energy",
+    "incident_type": "Ransomware",
+    "severity": "High",
+    "country": "India",
+    "date": "2025-07-02"
+  },
+  {
+    "id": 24,
+    "company": "Tesla",
+    "sector": "Finance",
+    "incident_type": "Insider Threat",
+    "severity": "Medium",
+    "country": "Germany",
+    "date": "2026-05-01"
+  },
+  {
+    "id": 25,
+    "company": "Cisco",
+    "sector": "Technology",
+    "incident_type": "Supply Chain Attack",
+    "severity": "Medium",
+    "country": "Australia",
+    "date": "2025-12-09"
+  },
+  {
+    "id": 26,
+    "company": "Toyota",
+    "sector": "Technology",
+    "incident_type": "DDoS",
+    "severity": "High",
+    "country": "India",
+    "date": "2026-04-11"
+  },
+  {
+    "id": 27,
+    "company": "Google",
+    "sector": "Finance",
+    "incident_type": "Data Breach",
+    "severity": "Medium",
+    "country": "Canada",
+    "date": "2025-07-19"
+  },
+  {
+    "id": 28,
+    "company": "Tesla",
+    "sector": "Government",
+    "incident_type": "Phishing",
+    "severity": "Medium",
+    "country": "Australia",
+    "date": "2025-11-03"
+  },
+  {
+    "id": 29,
+    "company": "Google",
+    "sector": "Energy",
+    "incident_type": "Insider Threat",
+    "severity": "Low",
+    "country": "Canada",
+    "date": "2026-05-28"
+  },
+  {
+    "id": 30,
+    "company": "Meta",
+    "sector": "Energy",
+    "incident_type": "Insider Threat",
+    "severity": "Medium",
+    "country": "Germany",
+    "date": "2026-01-16"
+  },
+  {
+    "id": 31,
+    "company": "TCS",
+    "sector": "Healthcare",
+    "incident_type": "Data Breach",
+    "severity": "Critical",
+    "country": "Australia",
+    "date": "2025-12-15"
+  },
+  {
+    "id": 32,
+    "company": "Microsoft",
+    "sector": "Retail",
+    "incident_type": "Insider Threat",
+    "severity": "Low",
+    "country": "India",
+    "date": "2025-11-04"
+  },
+  {
+    "id": 33,
+    "company": "Toyota",
+    "sector": "Finance",
+    "incident_type": "Insider Threat",
+    "severity": "Critical",
+    "country": "Germany",
+    "date": "2026-02-12"
+  },
+  {
+    "id": 34,
+    "company": "IBM",
+    "sector": "Technology",
+    "incident_type": "Data Breach",
+    "severity": "High",
+    "country": "UK",
+    "date": "2025-07-30"
+  },
+  {
+    "id": 35,
+    "company": "JP Morgan",
+    "sector": "Healthcare",
+    "incident_type": "Insider Threat",
+    "severity": "Critical",
+    "country": "Germany",
+    "date": "2025-06-22"
+  },
+  {
+    "id": 36,
+    "company": "TCS",
+    "sector": "Energy",
+    "incident_type": "Data Breach",
+    "severity": "High",
+    "country": "UK",
+    "date": "2026-03-05"
+  },
+  {
+    "id": 37,
+    "company": "Oracle",
+    "sector": "Technology",
+    "incident_type": "Data Breach",
+    "severity": "Medium",
+    "country": "USA",
+    "date": "2025-11-16"
+  },
+  {
+    "id": 38,
+    "company": "Intel",
+    "sector": "Energy",
+    "incident_type": "Insider Threat",
+    "severity": "High",
+    "country": "USA",
+    "date": "2025-07-03"
+  },
+  {
+    "id": 39,
+    "company": "Microsoft",
+    "sector": "Energy",
+    "incident_type": "Credential Leak",
+    "severity": "Low",
+    "country": "India",
+    "date": "2025-07-21"
+  },
+  {
+    "id": 40,
+    "company": "Amazon",
+    "sector": "Government",
+    "incident_type": "DDoS",
+    "severity": "High",
+    "country": "USA",
+    "date": "2026-03-21"
+  },
+  {
+    "id": 41,
+    "company": "Intel",
+    "sector": "Healthcare",
+    "incident_type": "Phishing",
+    "severity": "Critical",
+    "country": "Germany",
+    "date": "2026-03-28"
+  },
+  {
+    "id": 42,
+    "company": "Intel",
+    "sector": "Healthcare",
+    "incident_type": "DDoS",
+    "severity": "High",
+    "country": "Canada",
+    "date": "2026-04-15"
+  },
+  {
+    "id": 43,
+    "company": "IBM",
+    "sector": "Energy",
+    "incident_type": "Credential Leak",
+    "severity": "Low",
+    "country": "India",
+    "date": "2026-04-18"
+  },
+  {
+    "id": 44,
+    "company": "Amazon",
+    "sector": "Finance",
+    "incident_type": "Insider Threat",
+    "severity": "High",
+    "country": "Germany",
+    "date": "2025-08-12"
+  },
+  {
+    "id": 45,
+    "company": "IBM",
+    "sector": "Retail",
+    "incident_type": "Data Breach",
+    "severity": "Low",
+    "country": "Australia",
+    "date": "2026-04-25"
+  },
+  {
+    "id": 46,
+    "company": "Cisco",
+    "sector": "Retail",
+    "incident_type": "Ransomware",
+    "severity": "Low",
+    "country": "India",
+    "date": "2025-08-01"
+  },
+  {
+    "id": 47,
+    "company": "Microsoft",
+    "sector": "Retail",
+    "incident_type": "Supply Chain Attack",
+    "severity": "Low",
+    "country": "Canada",
+    "date": "2026-02-12"
+  },
+  {
+    "id": 48,
+    "company": "Oracle",
+    "sector": "Finance",
+    "incident_type": "Supply Chain Attack",
+    "severity": "Low",
+    "country": "Australia",
+    "date": "2025-08-26"
+  },
+  {
+    "id": 49,
+    "company": "Toyota",
+    "sector": "Finance",
+    "incident_type": "Credential Leak",
+    "severity": "High",
+    "country": "Australia",
+    "date": "2025-07-15"
+  },
+  {
+    "id": 50,
+    "company": "Meta",
+    "sector": "Energy",
+    "incident_type": "Data Breach",
+    "severity": "Medium",
+    "country": "India",
+    "date": "2026-01-31"
+  },
+  {
+    "id": 51,
+    "company": "Oracle",
+    "sector": "Retail",
+    "incident_type": "Insider Threat",
+    "severity": "Critical",
+    "country": "Australia",
+    "date": "2025-08-28"
+  },
+  {
+    "id": 52,
+    "company": "TCS",
+    "sector": "Government",
+    "incident_type": "Credential Leak",
+    "severity": "Low",
+    "country": "India",
+    "date": "2026-03-12"
+  },
+  {
+    "id": 53,
+    "company": "Cisco",
+    "sector": "Energy",
+    "incident_type": "Ransomware",
+    "severity": "Medium",
+    "country": "India",
+    "date": "2025-08-07"
+  },
+  {
+    "id": 54,
+    "company": "Toyota",
+    "sector": "Retail",
+    "incident_type": "Credential Leak",
+    "severity": "Medium",
+    "country": "USA",
+    "date": "2025-07-01"
+  },
+  {
+    "id": 55,
+    "company": "IBM",
+    "sector": "Energy",
+    "incident_type": "Supply Chain Attack",
+    "severity": "Low",
+    "country": "Australia",
+    "date": "2026-01-12"
+  },
+  {
+    "id": 56,
+    "company": "Nvidia",
+    "sector": "Technology",
+    "incident_type": "Phishing",
+    "severity": "Medium",
+    "country": "Germany",
+    "date": "2025-12-27"
+  },
+  {
+    "id": 57,
+    "company": "Intel",
+    "sector": "Healthcare",
+    "incident_type": "Insider Threat",
+    "severity": "Low",
+    "country": "Japan",
+    "date": "2026-02-05"
+  },
+  {
+    "id": 58,
+    "company": "Toyota",
+    "sector": "Energy",
+    "incident_type": "Data Breach",
+    "severity": "Low",
+    "country": "UK",
+    "date": "2025-08-11"
+  },
+  {
+    "id": 59,
+    "company": "Tesla",
+    "sector": "Government",
+    "incident_type": "Credential Leak",
+    "severity": "High",
+    "country": "Japan",
+    "date": "2025-12-16"
+  },
+  {
+    "id": 60,
+    "company": "Oracle",
+    "sector": "Healthcare",
+    "incident_type": "DDoS",
+    "severity": "High",
+    "country": "Germany",
+    "date": "2026-02-14"
+  },
+  {
+    "id": 61,
+    "company": "Toyota",
+    "sector": "Technology",
+    "incident_type": "Ransomware",
+    "severity": "Low",
+    "country": "Japan",
+    "date": "2025-09-02"
+  },
+  {
+    "id": 62,
+    "company": "Oracle",
+    "sector": "Technology",
+    "incident_type": "Phishing",
+    "severity": "Medium",
+    "country": "Germany",
+    "date": "2025-06-29"
+  },
+  {
+    "id": 63,
+    "company": "Meta",
+    "sector": "Technology",
+    "incident_type": "Data Breach",
+    "severity": "Critical",
+    "country": "Japan",
+    "date": "2025-09-15"
+  },
+  {
+    "id": 64,
+    "company": "Tesla",
+    "sector": "Technology",
+    "incident_type": "DDoS",
+    "severity": "Low",
+    "country": "Japan",
+    "date": "2026-02-04"
+  },
+  {
+    "id": 65,
+    "company": "Cisco",
+    "sector": "Finance",
+    "incident_type": "Supply Chain Attack",
+    "severity": "High",
+    "country": "Canada",
+    "date": "2025-12-10"
+  },
+  {
+    "id": 66,
+    "company": "Tesla",
+    "sector": "Healthcare",
+    "incident_type": "Phishing",
+    "severity": "Medium",
+    "country": "Canada",
+    "date": "2025-11-11"
+  },
+  {
+    "id": 67,
+    "company": "Tesla",
+    "sector": "Telecommunications",
+    "incident_type": "DDoS",
+    "severity": "Low",
+    "country": "USA",
+    "date": "2025-07-02"
+  },
+  {
+    "id": 68,
+    "company": "Meta",
+    "sector": "Retail",
+    "incident_type": "Credential Leak",
+    "severity": "Critical",
+    "country": "USA",
+    "date": "2025-12-29"
+  },
+  {
+    "id": 69,
+    "company": "Oracle",
+    "sector": "Telecommunications",
+    "incident_type": "Ransomware",
+    "severity": "High",
+    "country": "Australia",
+    "date": "2025-07-31"
+  },
+  {
+    "id": 70,
+    "company": "Toyota",
+    "sector": "Finance",
+    "incident_type": "Phishing",
+    "severity": "Critical",
+    "country": "Germany",
+    "date": "2025-12-11"
+  },
+  {
+    "id": 71,
+    "company": "Intel",
+    "sector": "Healthcare",
+    "incident_type": "Credential Leak",
+    "severity": "Critical",
+    "country": "USA",
+    "date": "2025-12-13"
+  },
+  {
+    "id": 72,
+    "company": "Meta",
+    "sector": "Healthcare",
+    "incident_type": "Phishing",
+    "severity": "Critical",
+    "country": "India",
+    "date": "2026-03-04"
+  },
+  {
+    "id": 73,
+    "company": "Microsoft",
+    "sector": "Retail",
+    "incident_type": "Insider Threat",
+    "severity": "High",
+    "country": "UK",
+    "date": "2026-05-10"
+  },
+  {
+    "id": 74,
+    "company": "Cisco",
+    "sector": "Retail",
+    "incident_type": "Phishing",
+    "severity": "Low",
+    "country": "USA",
+    "date": "2025-06-24"
+  },
+  {
+    "id": 75,
+    "company": "Infosys",
+    "sector": "Government",
+    "incident_type": "Supply Chain Attack",
+    "severity": "Medium",
+    "country": "USA",
+    "date": "2025-09-07"
+  },
+  {
+    "id": 76,
+    "company": "Nvidia",
+    "sector": "Finance",
+    "incident_type": "Phishing",
+    "severity": "Critical",
+    "country": "Japan",
+    "date": "2025-07-25"
+  },
+  {
+    "id": 77,
+    "company": "Microsoft",
+    "sector": "Healthcare",
+    "incident_type": "Phishing",
+    "severity": "Critical",
+    "country": "Australia",
+    "date": "2026-04-20"
+  },
+  {
+    "id": 78,
+    "company": "Intel",
+    "sector": "Telecommunications",
+    "incident_type": "Phishing",
+    "severity": "Critical",
+    "country": "Canada",
+    "date": "2026-02-01"
+  },
+  {
+    "id": 79,
+    "company": "Meta",
+    "sector": "Healthcare",
+    "incident_type": "Data Breach",
+    "severity": "High",
+    "country": "Japan",
+    "date": "2025-11-29"
+  },
+  {
+    "id": 80,
+    "company": "Google",
+    "sector": "Government",
+    "incident_type": "Supply Chain Attack",
+    "severity": "Critical",
+    "country": "UK",
+    "date": "2025-12-14"
+  },
+  {
+    "id": 81,
+    "company": "Google",
+    "sector": "Healthcare",
+    "incident_type": "Data Breach",
+    "severity": "Low",
+    "country": "USA",
+    "date": "2026-04-04"
+  },
+  {
+    "id": 82,
+    "company": "Oracle",
+    "sector": "Retail",
+    "incident_type": "DDoS",
+    "severity": "Critical",
+    "country": "Australia",
+    "date": "2026-01-24"
+  },
+  {
+    "id": 83,
+    "company": "Microsoft",
+    "sector": "Retail",
+    "incident_type": "Ransomware",
+    "severity": "Low",
+    "country": "Germany",
+    "date": "2025-11-26"
+  },
+  {
+    "id": 84,
+    "company": "IBM",
+    "sector": "Telecommunications",
+    "incident_type": "Ransomware",
+    "severity": "High",
+    "country": "India",
+    "date": "2026-01-02"
+  },
+  {
+    "id": 85,
+    "company": "Cisco",
+    "sector": "Government",
+    "incident_type": "Phishing",
+    "severity": "High",
+    "country": "Australia",
+    "date": "2025-08-27"
+  },
+  {
+    "id": 86,
+    "company": "Cisco",
+    "sector": "Healthcare",
+    "incident_type": "Insider Threat",
+    "severity": "Low",
+    "country": "Germany",
+    "date": "2026-05-26"
+  },
+  {
+    "id": 87,
+    "company": "IBM",
+    "sector": "Healthcare",
+    "incident_type": "DDoS",
+    "severity": "Medium",
+    "country": "Australia",
+    "date": "2025-07-24"
+  },
+  {
+    "id": 88,
+    "company": "Amazon",
+    "sector": "Government",
+    "incident_type": "Data Breach",
+    "severity": "Low",
+    "country": "Germany",
+    "date": "2026-02-06"
+  },
+  {
+    "id": 89,
+    "company": "Google",
+    "sector": "Healthcare",
+    "incident_type": "Phishing",
+    "severity": "Low",
+    "country": "Australia",
+    "date": "2026-02-28"
+  },
+  {
+    "id": 90,
+    "company": "Tesla",
+    "sector": "Retail",
+    "incident_type": "Credential Leak",
+    "severity": "High",
+    "country": "USA",
+    "date": "2026-03-06"
+  },
+  {
+    "id": 91,
+    "company": "TCS",
+    "sector": "Technology",
+    "incident_type": "Phishing",
+    "severity": "Low",
+    "country": "Canada",
+    "date": "2026-03-06"
+  },
+  {
+    "id": 92,
+    "company": "IBM",
+    "sector": "Retail",
+    "incident_type": "Ransomware",
+    "severity": "Critical",
+    "country": "Australia",
+    "date": "2025-11-15"
+  },
+  {
+    "id": 93,
+    "company": "Amazon",
+    "sector": "Retail",
+    "incident_type": "Credential Leak",
+    "severity": "Low",
+    "country": "USA",
+    "date": "2025-11-18"
+  },
+  {
+    "id": 94,
+    "company": "Oracle",
+    "sector": "Telecommunications",
+    "incident_type": "Ransomware",
+    "severity": "Low",
+    "country": "Australia",
+    "date": "2025-12-22"
+  },
+  {
+    "id": 95,
+    "company": "Toyota",
+    "sector": "Energy",
+    "incident_type": "DDoS",
+    "severity": "Low",
+    "country": "USA",
+    "date": "2025-11-26"
+  },
+  {
+    "id": 96,
+    "company": "Google",
+    "sector": "Technology",
+    "incident_type": "Supply Chain Attack",
+    "severity": "Medium",
+    "country": "UK",
+    "date": "2026-04-28"
+  },
+  {
+    "id": 97,
+    "company": "IBM",
+    "sector": "Telecommunications",
+    "incident_type": "Ransomware",
+    "severity": "Critical",
+    "country": "Germany",
+    "date": "2026-01-27"
+  },
+  {
+    "id": 98,
+    "company": "HSBC",
+    "sector": "Technology",
+    "incident_type": "Phishing",
+    "severity": "Critical",
+    "country": "Germany",
+    "date": "2025-09-02"
+  },
+  {
+    "id": 99,
+    "company": "Meta",
+    "sector": "Telecommunications",
+    "incident_type": "Ransomware",
+    "severity": "High",
+    "country": "India",
+    "date": "2026-03-28"
+  },
+  {
+    "id": 100,
+    "company": "Infosys",
+    "sector": "Telecommunications",
+    "incident_type": "Insider Threat",
+    "severity": "Low",
+    "country": "Canada",
+    "date": "2026-02-28"
+  }
+]
+</file>
+
+<file path="backend/requirements.txt">
+annotated-doc==0.0.4
+annotated-types==0.7.0
+anyio==4.13.0
+click==8.4.1
+colorama==0.4.6
+duckdb==1.5.3
+fastapi==0.136.3
+h11==0.16.0
+idna==3.17
+numpy==2.4.6
+pandas==3.0.3
+pydantic==2.13.4
+pydantic_core==2.46.4
+python-dateutil==2.9.0.post0
+python-multipart==0.0.29
+python-dotenv==1.0.1
+six==1.17.0
+starlette==1.2.0
+typing-inspection==0.4.2
+typing_extensions==4.15.0
+tzdata==2026.2
+uvicorn==0.48.0
+</file>
+
+<file path="frontend/app/layout.tsx">
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import "./globals.css";
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+export const metadata: Metadata = {
+  title: "Create Next App",
+  description: "Generated by create next app",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+    >
+      <body>{children}</body>
+    </html>
+  );
+}
+</file>
+
+<file path="frontend/components/SectorChart.tsx">
+"use client";
+
+import ReactECharts from "echarts-for-react";
+
+export default function SectorChart({ data }: any) {
+  if (!data) return null;
+  const sectors = Object.keys(data);
+  const values = Object.values(data);
+
+  const option = {
+    backgroundColor: "transparent",
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'shadow'
+      },
+      backgroundColor: 'rgba(11, 17, 23, 0.9)',
+      borderColor: 'rgba(56, 189, 248, 0.3)',
+      textStyle: {
+        color: '#fff'
+      }
+    },
+    grid: {
+      left: '3%',
+      right: '4%',
+      bottom: '3%',
+      top: '10%',
+      containLabel: true
+    },
+    xAxis: {
+      type: "category",
+      data: sectors,
+      axisLabel: {
+        color: '#94a3b8',
+        fontSize: 11,
+      },
+      axisLine: {
+        lineStyle: {
+          color: '#1e293b'
+        }
+      }
+    },
+    yAxis: {
+      type: "value",
+      splitLine: {
+        lineStyle: {
+          color: '#1e293b',
+          type: 'dashed'
+        }
+      },
+      axisLabel: {
+        color: '#94a3b8',
+        fontSize: 11,
+      }
+    },
+    series: [
+      {
+        data: values,
+        type: "bar",
+        itemStyle: {
+          color: {
+            type: 'linear',
+            x: 0,
+            y: 0,
+            x2: 0,
+            y2: 1,
+            colorStops: [{
+                offset: 0, color: '#38bdf8' // color at 0%
+            }, {
+                offset: 1, color: '#0369a1' // color at 100%
+            }],
+            global: false // default is false
+          },
+          borderRadius: [4, 4, 0, 0]
+        },
+        emphasis: {
+          itemStyle: {
+            color: '#7dd3fc'
+          }
+        }
+      },
+    ],
+  };
+
+  return (
+    <div className="glass-card border border-slate-800/80 rounded-xl p-5 relative overflow-hidden group hover:border-cyan-500/40 transition-all duration-500 hover:shadow-[0_0_30px_rgba(56,189,248,0.1)]">
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent group-hover:via-cyan-400/50 transition-colors"></div>
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center space-x-2">
+          <div className="w-1.5 h-5 bg-cyan-500 rounded-full shadow-[0_0_10px_rgba(56,189,248,0.5)]"></div>
+          <h2 className="text-sm font-bold uppercase tracking-widest text-white">
+            Sector Exposure
+          </h2>
+        </div>
+        <span className="px-2 py-0.5 rounded-full bg-[#0B1117] border border-slate-700 text-[9px] font-bold tracking-widest text-slate-400">DISTRIBUTION</span>
+      </div>
+
+      <div className="relative group-hover:drop-shadow-[0_0_15px_rgba(56,189,248,0.1)] transition-all duration-500">
+        <ReactECharts option={option} style={{ height: 320 }} />
+      </div>
+    </div>
+  );
+}
+</file>
+
+<file path="frontend/components/SeverityChart.tsx">
+"use client";
+
+import ReactECharts from "echarts-for-react";
+
+export default function SeverityChart({ data }: any) {
+  if (!data) return null;
+  const option = {
+    backgroundColor: "transparent",
+    tooltip: {
+      trigger: "item",
+      backgroundColor: 'rgba(11, 17, 23, 0.9)',
+      borderColor: 'rgba(56, 189, 248, 0.3)',
+      textStyle: {
+        color: '#fff'
+      }
+    },
+    legend: {
+      orient: 'horizontal',
+      bottom: 'bottom',
+      textStyle: {
+        color: '#94a3b8'
+      }
+    },
+    series: [
+      {
+        type: "pie",
+        radius: ["40%", "70%"],
+        center: ['50%', '45%'],
+        avoidLabelOverlap: false,
+        itemStyle: {
+          borderRadius: 10,
+          borderColor: '#030712',
+          borderWidth: 2
+        },
+        label: {
+          show: false,
+          position: 'center'
+        },
+        emphasis: {
+          label: {
+            show: true,
+            fontSize: '20',
+            fontWeight: 'bold',
+            color: '#fff'
+          }
+        },
+        labelLine: {
+          show: false
+        },
+        data: Object.entries(data).map(([name, value]) => {
+          let itemColor = '#38bdf8'; // default cyan
+          if (name.toLowerCase() === 'critical') itemColor = '#ef4444'; // red
+          if (name.toLowerCase() === 'high') itemColor = '#f97316'; // orange
+          if (name.toLowerCase() === 'medium') itemColor = '#eab308'; // yellow
+          if (name.toLowerCase() === 'low') itemColor = '#22c55e'; // green
+          
+          return {
+            name,
+            value,
+            itemStyle: { color: itemColor }
+          };
+        }),
+      },
+    ],
+  };
+
+  return (
+    <div className="glass-card border border-slate-800/80 rounded-xl p-5 relative overflow-hidden group hover:border-cyan-500/40 transition-all duration-500 hover:shadow-[0_0_30px_rgba(56,189,248,0.1)]">
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent group-hover:via-cyan-400/50 transition-colors"></div>
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center space-x-2">
+          <div className="w-1.5 h-5 bg-cyan-500 rounded-full shadow-[0_0_10px_rgba(56,189,248,0.5)]"></div>
+          <h2 className="text-sm font-bold uppercase tracking-widest text-white">
+            Severity Distribution
+          </h2>
+        </div>
+        <span className="px-2 py-0.5 rounded-full bg-[#0B1117] border border-slate-700 text-[9px] font-bold tracking-widest text-slate-400">ANALYTICS</span>
+      </div>
+
+      <div className="relative group-hover:drop-shadow-[0_0_15px_rgba(56,189,248,0.1)] transition-all duration-500">
+        <ReactECharts option={option} style={{ height: 320 }} />
+      </div>
+    </div>
+  );
+}
+</file>
+
+<file path="frontend/components/TrendChart.tsx">
+"use client";
+
+import ReactECharts from "echarts-for-react";
+
+export default function TrendChart({ data }: any) {
+  if (!data) return null;
+  const months = Object.keys(data).sort();
+  const values = months.map((m) => data[m]);
+
+  const option = {
+    backgroundColor: "transparent",
+    tooltip: {
+      trigger: 'axis',
+      backgroundColor: 'rgba(11, 17, 23, 0.9)',
+      borderColor: 'rgba(56, 189, 248, 0.3)',
+      textStyle: {
+        color: '#fff'
+      }
+    },
+    grid: {
+      left: '3%',
+      right: '4%',
+      bottom: '3%',
+      top: '10%',
+      containLabel: true
+    },
+    xAxis: {
+      type: "category",
+      boundaryGap: false,
+      data: months,
+      axisLabel: {
+        color: '#94a3b8',
+        fontSize: 11,
+      },
+      axisLine: {
+        lineStyle: {
+          color: '#1e293b'
+        }
+      }
+    },
+    yAxis: {
+      type: "value",
+      splitLine: {
+        lineStyle: {
+          color: '#1e293b',
+          type: 'dashed'
+        }
+      },
+      axisLabel: {
+        color: '#94a3b8',
+        fontSize: 11,
+      }
+    },
+    series: [
+      {
+        data: values,
+        type: "line",
+        smooth: true,
+        symbol: 'circle',
+        symbolSize: 8,
+        itemStyle: {
+          color: '#38bdf8',
+          borderColor: '#030712',
+          borderWidth: 2
+        },
+        lineStyle: {
+          width: 3,
+          color: '#38bdf8',
+          shadowColor: 'rgba(56, 189, 248, 0.5)',
+          shadowBlur: 10
+        },
+        areaStyle: {
+          color: {
+            type: 'linear',
+            x: 0,
+            y: 0,
+            x2: 0,
+            y2: 1,
+            colorStops: [{
+              offset: 0, color: 'rgba(56, 189, 248, 0.5)'
+            }, {
+              offset: 1, color: 'rgba(56, 189, 248, 0.0)'
+            }],
+            global: false
+          }
+        }
+      },
+    ],
+  };
+
+  return (
+    <div className="glass-card border border-slate-800/80 rounded-xl p-5 relative overflow-hidden group hover:border-cyan-500/40 transition-all duration-500 hover:shadow-[0_0_30px_rgba(56,189,248,0.1)]">
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent group-hover:via-cyan-400/50 transition-colors"></div>
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center space-x-2">
+          <div className="w-1.5 h-5 bg-cyan-500 rounded-full shadow-[0_0_10px_rgba(56,189,248,0.5)]"></div>
+          <h2 className="text-sm font-bold uppercase tracking-widest text-white">
+            Incident Timeline
+          </h2>
+        </div>
+        <span className="px-2 py-0.5 rounded-full bg-[#0B1117] border border-slate-700 text-[9px] font-bold tracking-widest text-slate-400">TRENDS</span>
+      </div>
+
+      <div className="relative group-hover:drop-shadow-[0_0_15px_rgba(56,189,248,0.1)] transition-all duration-500">
+        <ReactECharts option={option} style={{ height: 320 }} />
+      </div>
+    </div>
+  );
+}
+</file>
+
+<file path=".gitignore">
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[codz]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+/lib/
+/lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+#   Usually these files are written by a python script from a template
+#   before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py.cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+.pybuilder/
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+#   For a library or package, you might want to ignore these files since the code is
+#   intended to run in multiple environments; otherwise, check them in:
+# .python-version
+
+# pipenv
+#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
+#   However, in case of collaboration, if having platform-specific dependencies or dependencies
+#   having no cross-platform support, pipenv may install dependencies that don't work, or not
+#   install all needed dependencies.
+# Pipfile.lock
+
+# UV
+#   Similar to Pipfile.lock, it is generally recommended to include uv.lock in version control.
+#   This is especially recommended for binary packages to ensure reproducibility, and is more
+#   commonly ignored for libraries.
+# uv.lock
+
+# poetry
+#   Similar to Pipfile.lock, it is generally recommended to include poetry.lock in version control.
+#   This is especially recommended for binary packages to ensure reproducibility, and is more
+#   commonly ignored for libraries.
+#   https://python-poetry.org/docs/basic-usage/#commit-your-poetrylock-file-to-version-control
+# poetry.lock
+# poetry.toml
+
+# pdm
+#   Similar to Pipfile.lock, it is generally recommended to include pdm.lock in version control.
+#   pdm recommends including project-wide configuration in pdm.toml, but excluding .pdm-python.
+#   https://pdm-project.org/en/latest/usage/project/#working-with-version-control
+# pdm.lock
+# pdm.toml
+.pdm-python
+.pdm-build/
+
+# pixi
+#   Similar to Pipfile.lock, it is generally recommended to include pixi.lock in version control.
+# pixi.lock
+#   Pixi creates a virtual environment in the .pixi directory, just like venv module creates one
+#   in the .venv directory. It is recommended not to include this directory in version control.
+.pixi
+
+# PEP 582; used by e.g. github.com/David-OConnor/pyflow and github.com/pdm-project/pdm
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# Redis
+*.rdb
+*.aof
+*.pid
+
+# RabbitMQ
+mnesia/
+rabbitmq/
+rabbitmq-data/
+
+# ActiveMQ
+activemq-data/
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.envrc
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype static type analyzer
+.pytype/
+
+# Cython debug symbols
+cython_debug/
+
+# PyCharm
+#   JetBrains specific template is maintained in a separate JetBrains.gitignore that can
+#   be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
+#   and can be added to the global gitignore or merged into this file.  For a more nuclear
+#   option (not recommended) you can uncomment the following to ignore the entire idea folder.
+# .idea/
+
+# Abstra
+#   Abstra is an AI-powered process automation framework.
+#   Ignore directories containing user credentials, local state, and settings.
+#   Learn more at https://abstra.io/docs
+.abstra/
+
+# Visual Studio Code
+#   Visual Studio Code specific template is maintained in a separate VisualStudioCode.gitignore 
+#   that can be found at https://github.com/github/gitignore/blob/main/Global/VisualStudioCode.gitignore
+#   and can be added to the global gitignore or merged into this file. However, if you prefer, 
+#   you could uncomment the following to ignore the entire vscode folder
+# .vscode/
+# Temporary file for partial code execution
+tempCodeRunnerFile.py
+
+# Ruff stuff:
+.ruff_cache/
+
+# PyPI configuration file
+.pypirc
+
+# Marimo
+marimo/_static/
+marimo/_lsp/
+__marimo__/
+
+# Streamlit
+.streamlit/secrets.toml
+
+.env.local
+</file>
+
+<file path="docs/architecture.md">
+# Architecture Summary
+
+## System Overview
+
+Cyber Incident Disclosure Tracker is a production-style intelligence dashboard designed to monitor and analyze publicly disclosed cyber incidents across multiple sectors.
+
+The platform transforms raw incident records into actionable intelligence using analytics, trend detection, risk scoring, and intelligence summaries.
+
+---
+
+# Frontend Architecture
+
+Framework:
+
+* Next.js
+* TypeScript
+* Tailwind CSS
+
+Visualization:
+
+* Recharts
+
+Core Components:
+
+* KPI Cards
+* Intelligence Summary
+* Severity Distribution Chart
+* Sector Exposure Chart
+* Incident Timeline
+* Intelligence Sidebar
+* Threat Outlook
+* Incident Log Table
+* Filter System
+
+Frontend Responsibilities:
+
+* Dashboard rendering
+* Responsive layout
+* Data visualization
+* User interaction handling
+* Filtering
+* Intelligence presentation
+
+---
+
+# Backend Architecture
+
+Framework:
+
+* FastAPI
+
+Libraries:
+
+* Pandas
+
+Backend Responsibilities:
+
+* API generation
+* Dataset management
+* Analytics computation
+* Risk calculations
+* Intelligence aggregation
+
+---
+
+# API Endpoints
+
+| Endpoint         | Responsibility              |
+| ---------------- | --------------------------- |
+| `/api/incidents` | Returns incident dataset    |
+| `/api/metrics`   | Returns KPI metrics         |
+| `/api/analytics` | Returns analytics summaries |
+| `/api/download`  | Downloads dataset           |
+
+---
+
+# Intelligence Layer
+
+The intelligence layer converts analytical data into operational insights.
+
+Generated Intelligence:
+
+* Most targeted sector
+* Dominant severity
+* Cyber Risk Index
+* Threat outlook
+* Timeline trend analysis
+* Executive intelligence summaries
+
+---
+
+# Data Flow
+
+Frontend Dashboard
+↓
+FastAPI REST APIs
+↓
+Analytics Engine
+↓
+Incident Dataset
+↓
+Intelligence Generation
+↓
+User Insights
+
+---
+
+# Data Strategy
+
+Current Implementation:
+
+* Synthetic demo dataset
+* Live SEC EDGAR fetch configuration (requires environment variables)
+
+Intelligence Sources:
+
+* **SEC EDGAR**: Acts as the primary regulatory disclosure source. Configured via `SEC_EDGAR_API_URL` and `SEC_EDGAR_USER_AGENT` in `.env.local`.
+* **GDELT**: Acts as a global event and news intelligence source. Configured via `GDELT_API_URL` and `GDELT_QUERY` in `.env.local`.
+
+Future Integration:
+
+* Live cyber disclosure feeds
+* Deep SEC EDGAR Parsing (e.g., text extraction from 8-Ks)
+
+---
+
+# Validation
+
+The system successfully passed:
+
+* Visual Architecture Review (VAR)
+* User Acceptance Testing (UAT)
+
+Validated Areas:
+
+* responsiveness
+* filtering
+* edge cases
+* loading states
+* intelligence rendering
+* chart consistency
+* dataset export
+</file>
+
+<file path="frontend/app/globals.css">
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  background-color: #030712;
+}
+
+::selection {
+  background-color: rgba(56, 189, 248, 0.3);
+  color: #fff;
+}
+.glass-card {
+  background: rgba(11, 17, 23, 0.75);
+  backdrop-filter: blur(12px);
+
+  border: 1px solid rgba(56, 189, 248, 0.15);
+
+  box-shadow:
+    0 0 20px rgba(56, 189, 248, 0.05),
+    inset 0 0 20px rgba(255,255,255,0.01);
+}
+
+.cyan-glow {
+  box-shadow:
+    0 0 10px rgba(56,189,248,0.25),
+    0 0 20px rgba(56,189,248,0.15);
+}
+
+/* Custom Scrollbar for a premium feel */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(56, 189, 248, 0.5);
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.8);
+}
+</file>
+
+<file path="frontend/components/IncidentTable.tsx">
+"use client";
+
+import React from "react";
+
+export default function IncidentTable({ incidents, onRowClick }: any) {
+
+  const getSeverityBadge = (severity: string) => {
+    switch (severity?.toLowerCase()) {
+
+      case "critical":
+        return (
+          <span className="px-2.5 py-1 rounded-full text-[10px] font-bold tracking-widest bg-red-500/10 text-red-400 border border-red-500/30 shadow-[0_0_15px_rgba(239,68,68,0.2)]">
+            CRITICAL
+          </span>
+        );
+
+      case "high":
+        return (
+          <span className="px-2.5 py-1 rounded-full text-[10px] font-bold tracking-widest bg-orange-500/10 text-orange-400 border border-orange-500/30 shadow-[0_0_15px_rgba(249,115,22,0.2)]">
+            HIGH
+          </span>
+        );
+
+      case "medium":
+        return (
+          <span className="px-2.5 py-1 rounded-full text-[10px] font-bold tracking-widest bg-yellow-500/10 text-yellow-400 border border-yellow-500/30 shadow-[0_0_15px_rgba(234,179,8,0.2)]">
+            MEDIUM
+          </span>
+        );
+
+      case "low":
+        return (
+          <span className="px-2.5 py-1 rounded-full text-[10px] font-bold tracking-widest bg-green-500/10 text-green-400 border border-green-500/30 shadow-[0_0_15px_rgba(34,197,94,0.2)]">
+            LOW
+          </span>
+        );
+
+      default:
+        return (
+          <span className="px-2.5 py-1 rounded-full text-[10px] font-bold tracking-widest bg-slate-500/10 text-slate-400 border border-slate-500/30">
+            {severity?.toUpperCase()}
+          </span>
+        );
+    }
+  };
+
+  return (
+    <div className="glass-card border border-slate-800 rounded-xl overflow-hidden transition-all duration-300 hover:shadow-[0_0_20px_rgba(56,189,248,0.05)]">
+
+      {/* Header */}
+      <div className="p-6 border-b border-slate-800/60 bg-slate-900/20">
+
+        <div className="flex items-center justify-between">
+
+          <h2 className="text-lg font-semibold text-white flex items-center space-x-2">
+
+            <svg
+              className="w-5 h-5 text-cyan-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
+            </svg>
+
+            <span>Incident Log</span>
+
+          </h2>
+
+          <span className="px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 text-xs font-semibold border border-cyan-500/20">
+            {incidents?.length || 0} Records
+          </span>
+
+        </div>
+
+      </div>
+
+      {/* Table */}
+      <div className="overflow-x-auto max-h-[600px] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
+
+        <table className="w-full text-sm text-left border-collapse relative">
+
+          {/* Table Head */}
+          <thead className="text-[10px] uppercase tracking-widest text-slate-400 bg-[#0B1117] sticky top-0 z-20 shadow-md">
+
+            <tr>
+
+              <th className="p-4 font-bold border-b border-slate-800">
+                Company
+              </th>
+
+              <th className="p-4 font-bold border-b border-slate-800">
+                Sector
+              </th>
+
+              <th className="p-4 font-bold border-b border-slate-800">
+                Severity
+              </th>
+
+              <th className="p-4 font-bold border-b border-slate-800">
+                Type
+              </th>
+
+              <th className="p-4 font-bold border-b border-slate-800">
+                Country
+              </th>
+
+              <th className="p-4 font-bold text-right border-b border-slate-800">
+                Date
+              </th>
+
+            </tr>
+
+          </thead>
+
+          {/* Table Body */}
+          <tbody className="divide-y divide-slate-800/50">
+
+            {incidents?.map((incident: any) => (
+
+              <tr
+                key={incident.id}
+                onClick={() => onRowClick && onRowClick(incident)}
+                className="hover:bg-cyan-500/10 transition-all duration-200 group cursor-pointer"
+              >
+
+                {/* Company */}
+                <td className="p-4 max-w-[220px] truncate font-semibold text-slate-200 group-hover:text-cyan-300 transition-colors">
+                  {incident.company}
+                </td>
+
+                {/* Sector */}
+                <td className="p-4 text-slate-400 group-hover:text-slate-300 transition-colors">
+                  {incident.sector}
+                </td>
+
+                {/* Severity */}
+                <td className="p-4">
+                  {getSeverityBadge(incident.severity)}
+                </td>
+
+                {/* Type */}
+                <td className="p-4 text-slate-400 group-hover:text-slate-300 transition-colors">
+                  {incident.incident_type}
+                </td>
+
+                {/* Country */}
+                <td className="p-4 text-slate-400 group-hover:text-slate-300 transition-colors">
+                  {incident.country}
+                </td>
+
+                {/* Date */}
+                <td className="p-4 text-slate-400 text-right whitespace-nowrap font-medium group-hover:text-cyan-100 transition-colors">
+                  {incident.date}
+                </td>
+
+              </tr>
+
+            ))}
+
+          </tbody>
+
+        </table>
+
+        {/* Empty State */}
+        {(!incidents || incidents.length === 0) && (
+
+          <div className="p-8 text-center text-slate-500">
+            No incidents found matching criteria.
+          </div>
+
+        )}
+
+      </div>
+
+    </div>
+  );
+}
+</file>
+
+<file path="backend/app/main.py">
+from fastapi import FastAPI
+import json
+import urllib.request
+import time
+import requests
+import logging
+import os
+from pathlib import Path
+from dotenv import load_dotenv
+
+# Load environment variables from .env.local if present
+load_dotenv(dotenv_path=Path(__file__).parent.parent.parent / ".env.local")
+load_dotenv() # Fallback to .env
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+from fastapi import Query
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
+app = FastAPI(title="Cyber Incident Disclosure Tracker")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+DATA_FILE = Path(__file__).parent.parent / "mock_data" / "incidents.json"
+
+
+def fetch_live_sec_data():
+    url = os.getenv("SEC_EDGAR_API_URL", "https://data.sec.gov/submissions/CIK0000320193.json")
+    user_agent = os.getenv("SEC_EDGAR_USER_AGENT", "CyberRailTracker/1.0 (admin@example.com)")
+    headers = {"User-Agent": user_agent}
+    
+    # Check GDELT config as well just to log if it's available (placeholder logic)
+    gdelt_url = os.getenv("GDELT_API_URL")
+    if gdelt_url:
+        logger.info("GDELT API configuration found, ready for integration.")
+
+    response = requests.get(url, headers=headers, timeout=5)
+    response.raise_for_status()
+    data = response.json()
+    
+    company_name = data.get("name", "Unknown Company")
+    filings = data.get("filings", {}).get("recent", {})
+    num_filings = len(filings.get("accessionNumber", []))
+    
+    sectors = ["Technology", "Finance", "Healthcare", "Energy", "Retail", "Government", "Telecommunications"]
+    severities = ["Low", "Medium", "High", "Critical"]
+    
+    live_incidents = []
+    
+    for i in range(min(50, num_filings)):
+        form_type = filings["form"][i]
+        
+        live_incidents.append({
+            "id": filings["accessionNumber"][i],
+            "company": company_name,
+            "sector": sectors[i % len(sectors)],
+            "incident_type": f"SEC Form {form_type} Filing",
+            "severity": severities[i % len(severities)],
+            "country": "US",
+            "date": filings["filingDate"][i]
+        })
+        
+    if not live_incidents:
+        raise ValueError("No live data parsed")
+        
+    return live_incidents
+
+
+def load_data():
+    try:
+        logger.info("Attempting LIVE SEC ingestion")
+        live_data = fetch_live_sec_data()
+        logger.info("LIVE SEC ingestion successful")
+        return live_data, "LIVE"
+    except Exception as e:
+        logger.warning(f"LIVE ingestion failed — falling back to MOCK: {e}")
+        with open(DATA_FILE, "r") as f:
+            return json.load(f), "MOCK"
+
+
+@app.get("/")
+def root():
+    return {"message": "Cyber Incident Disclosure Tracker API"}
+
+
+@app.get("/api/incidents")
+def get_incidents(
+    sector: str | None = Query(None),
+    severity: str | None = Query(None)
+):
+    incidents, _ = load_data()
+
+    if sector:
+        incidents = [
+            i for i in incidents
+            if i["sector"] == sector
+        ]
+
+    if severity:
+        incidents = [
+            i for i in incidents
+            if i["severity"] == severity
+        ]
+
+    return incidents
+
+@app.get("/api/metrics")
+def get_metrics():
+    incidents, source_mode = load_data()
+
+    return {
+        "total_incidents": len(incidents),
+        "high_severity": len([i for i in incidents if i["severity"] in ["High", "Critical"]]),
+        "sectors": len(set(i["sector"] for i in incidents)),
+        "companies": len(set(i["company"] for i in incidents)),
+        "source_mode": source_mode
+    }
+@app.get("/api/analytics")
+def get_analytics():
+    incidents, _ = load_data()
+
+    severity_breakdown = {}
+    sector_breakdown = {}
+    monthly_trend = {}
+
+    for incident in incidents:
+
+        severity = incident["severity"]
+        sector = incident["sector"]
+
+        severity_breakdown[severity] = (
+            severity_breakdown.get(severity, 0) + 1
+        )
+
+        sector_breakdown[sector] = (
+            sector_breakdown.get(sector, 0) + 1
+        )
+
+        month = incident["date"][:7]
+
+        monthly_trend[month] = (
+            monthly_trend.get(month, 0) + 1
+        )
+
+    return {
+        "severity_breakdown": severity_breakdown,
+        "sector_breakdown": sector_breakdown,
+        "monthly_trend": monthly_trend
+    }
+@app.get("/api/download")
+def download_data():
+    return FileResponse(
+        DATA_FILE,
+        media_type="application/json",
+        filename="incidents.json"
+    )
+</file>
+
+<file path="frontend/app/page.tsx">
+"use client";
+
+import { useEffect, useState } from "react";
+import SeverityChart from "@/components/SeverityChart";
+import SectorChart from "@/components/SectorChart";
+import TrendChart from "@/components/TrendChart";
+import IntelligenceSidebar from "@/components/IntelligenceSidebar";
+import IncidentTable from "@/components/IncidentTable";
+import ArchitectModal from "@/components/ArchitectModal";
+
+import {
+  getMetrics,
+  getAnalytics,
+  getIncidents,
+} from "@/lib/api";
+
+export default function Home() {
+  const [metrics, setMetrics] = useState<any>(null);
+  const [analytics, setAnalytics] = useState<any>(null);
+  const [incidents, setIncidents] = useState<any[]>([]);
+
+  const [sectorFilter, setSectorFilter] = useState("");
+  const [severityFilter, setSeverityFilter] = useState("");
+
+  const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const [panelType, setPanelType] = useState<string>("ai_insights");
+  const [selectedItem, setSelectedItem] = useState<any>(null);
+  const [isArchitectModalOpen, setIsArchitectModalOpen] = useState(false);
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const metricsData = await getMetrics();
+        const analyticsData = await getAnalytics();
+        const incidentsData = await getIncidents();
+
+        setMetrics(metricsData);
+        setAnalytics(analyticsData);
+        setIncidents(incidentsData);
+      } catch (error) {
+        console.error("Failed to load dashboard data:", error);
+      }
+    }
+
+    loadData();
+  }, []);
+
+  async function applyFilters(sector?: string, severity?: string) {
+    const data = await getIncidents(sector, severity);
+    setIncidents(data);
+  }
+
+  useEffect(() => {
+    applyFilters(sectorFilter, severityFilter);
+  }, [sectorFilter, severityFilter]);
+
+  const handleRowClick = (incident: any) => {
+    setSelectedItem(incident);
+    setPanelType("incident");
+    setIsPanelOpen(true);
+  };
+
+  if (!metrics || !analytics) {
+    return (
+      <main className="min-h-screen bg-[#030712] text-white flex flex-col items-center justify-center space-y-4">
+        <div className="relative flex h-12 w-12">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-20"></span>
+          <span className="relative inline-flex rounded-full h-12 w-12 bg-cyan-500/20 border border-cyan-500/50"></span>
+        </div>
+        <p className="text-cyan-400 tracking-[0.2em] uppercase text-sm font-semibold animate-pulse">
+          Initializing Intelligence Feed...
+        </p>
+      </main>
+    );
+  }
+
+  return (
+    <main className="min-h-screen bg-[#030712] text-white selection:bg-cyan-500/30">
+      
+      {/* Transparent Header */}
+      <header className="relative w-full bg-[#030712]/90 border-b border-cyan-500/10">
+        <div className="max-w-[1600px] mx-auto px-6 md:px-8 h-[72px] flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500/20 to-transparent border border-cyan-500/30 flex items-center justify-center shadow-[0_0_15px_rgba(56,189,248,0.15)]">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+              </span>
+            </div>
+            <span className="font-bold text-sm tracking-widest text-slate-300 uppercase hidden sm:block">
+              Infocreon <span className="text-cyan-500">Internship</span>
+            </span>
+          </div>
+          <button 
+            onClick={() => setIsArchitectModalOpen(true)}
+            className="text-slate-400 hover:text-cyan-400 transition-colors p-2"
+            title="Architect Information"
+          >
+            <svg className="w-5 h-5 drop-shadow-[0_0_5px_rgba(56,189,248,0.5)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <div className="px-6 md:px-8 pt-5 pb-8">
+        <div className="max-w-[1600px] mx-auto">
+          {/* Main Content Area (Full Width) */}
+          <div className="w-full flex flex-col min-w-0">
+            {/* Page Header */}
+            <div className="mb-6 relative flex flex-col gap-1">
+              <div className="flex items-center space-x-2">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+                </span>
+                <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-cyan-400">
+                  {metrics.source_mode || "LIVE"} INTELLIGENCE FEED
+                </p>
+              </div>
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-100 to-cyan-500 tracking-tight py-1">
+                Infocreon Internship – Cyber Incident Disclosure Tracker
+              </h1>
+              <p className="text-sm text-slate-400 font-medium">
+                Monitoring SEC EDGAR, CISA, GDELT, SEC disclosures and global cyber threat intelligence.
+              </p>
+            </div>
+
+            {/* KPI Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
+              <div className="glass-card relative overflow-hidden border border-slate-800/50 rounded-xl p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_25px_rgba(56,189,248,0.2)] hover:border-cyan-500/40 group cursor-pointer" onClick={() => { setPanelType("ai_insights"); setIsPanelOpen(true); }}>
+                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="relative z-10 flex justify-between items-start mb-3">
+                  <h2 className="text-[11px] font-bold uppercase tracking-widest text-slate-400 group-hover:text-cyan-400 transition-colors flex items-center space-x-2">
+                    <svg className="w-4 h-4 text-cyan-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    <span>Total Incidents</span>
+                  </h2>
+                  <span className="px-2 py-0.5 text-[9px] font-bold tracking-wider text-cyan-400 bg-cyan-400/10 border border-cyan-400/20 rounded-full flex items-center gap-1">
+                    <span className="w-1 h-1 rounded-full bg-cyan-400 animate-pulse"></span>
+                    ACTIVE
+                  </span>
+                </div>
+                <p className="text-3xl font-black text-white tracking-tight relative z-10">
+                  {metrics.total_incidents}
+                </p>
+              </div>
+
+              <div className="glass-card relative overflow-hidden border border-slate-800/50 rounded-xl p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_25px_rgba(239,68,68,0.2)] hover:border-red-500/40 group cursor-pointer" onClick={() => { setPanelType("payment_flow"); setIsPanelOpen(true); }}>
+                <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="relative z-10 flex justify-between items-start mb-3">
+                  <h2 className="text-[11px] font-bold uppercase tracking-widest text-slate-400 group-hover:text-red-400 transition-colors flex items-center space-x-2">
+                    <svg className="w-4 h-4 text-red-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    <span>High Severity</span>
+                  </h2>
+                  <span className="px-2 py-0.5 text-[9px] font-bold tracking-wider text-red-400 bg-red-400/10 border border-red-400/20 rounded-full flex items-center gap-1">
+                    <span className="w-1 h-1 rounded-full bg-red-400 animate-pulse"></span>
+                    HIGH RISK
+                  </span>
+                </div>
+                <p className="text-3xl font-black text-red-400 tracking-tight relative z-10">
+                  {metrics.high_severity}
+                </p>
+              </div>
+
+              <div className="glass-card relative overflow-hidden border border-slate-800/50 rounded-xl p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_25px_rgba(56,189,248,0.2)] hover:border-cyan-500/40 group cursor-pointer" onClick={() => { setPanelType("sector_analytics"); setIsPanelOpen(true); }}>
+                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="relative z-10 flex justify-between items-start mb-3">
+                  <h2 className="text-[11px] font-bold uppercase tracking-widest text-slate-400 group-hover:text-cyan-400 transition-colors flex items-center space-x-2">
+                    <svg className="w-4 h-4 text-cyan-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                    <span>Sectors</span>
+                  </h2>
+                  <span className="px-2 py-0.5 text-[9px] font-bold tracking-wider text-slate-300 bg-slate-800 border border-slate-700 rounded-full flex items-center gap-1">
+                    MONITORED
+                  </span>
+                </div>
+                <p className="text-3xl font-black text-white tracking-tight relative z-10">
+                  {metrics.sectors}
+                </p>
+              </div>
+
+              <div className="glass-card relative overflow-hidden border border-slate-800/50 rounded-xl p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_25px_rgba(129,140,248,0.2)] hover:border-indigo-500/40 group cursor-pointer" onClick={() => { setPanelType("connected_institutions"); setIsPanelOpen(true); }}>
+                <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="relative z-10 flex justify-between items-start mb-3">
+                  <h2 className="text-[11px] font-bold uppercase tracking-widest text-slate-400 group-hover:text-indigo-400 transition-colors flex items-center space-x-2">
+                    <svg className="w-4 h-4 text-indigo-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    <span>Companies</span>
+                  </h2>
+                  <span className="px-2 py-0.5 text-[9px] font-bold tracking-wider text-indigo-300 bg-indigo-500/10 border border-indigo-500/20 rounded-full flex items-center gap-1">
+                    TRACKED
+                  </span>
+                </div>
+                <p className="text-3xl font-black text-white tracking-tight relative z-10">
+                  {metrics.companies}
+                </p>
+              </div>
+            </div>
+
+            {/* Intelligence Summary - Kept inline for high-level context */}
+            <div className="glass-card border border-slate-800/80 rounded-xl p-6 mb-8 relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-48 h-48 bg-cyan-500/10 blur-[60px] rounded-full pointer-events-none group-hover:bg-cyan-500/20 transition-colors duration-700"></div>
+              <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 relative z-10 gap-4">
+                <div className="flex items-center space-x-2">
+                  <span className="relative flex h-3 w-3">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-cyan-500"></span>
+                  </span>
+                  <h2 className="text-sm font-bold uppercase tracking-widest text-white drop-shadow-[0_0_10px_rgba(56,189,248,0.3)]">Intelligence Summary</h2>
+                </div>
+                <span className="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-[10px] font-bold tracking-widest text-cyan-400 flex items-center space-x-1.5 shadow-[0_0_10px_rgba(56,189,248,0.1)]">
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                  <span>SYSTEM GENERATED INSIGHTS</span>
+                </span>
+              </div>
+              <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-4 relative z-10">
+                {(() => {
+                  const topSector = analytics?.sector_breakdown
+                    ? Object.entries(analytics.sector_breakdown).sort((a: any, b: any) => Number(b[1]) - Number(a[1]))[0]?.[0]
+                    : "N/A";
+                  const topSeverity = analytics?.severity_breakdown
+                    ? Object.entries(analytics.severity_breakdown).sort((a: any, b: any) => Number(b[1]) - Number(a[1]))[0]?.[0]
+                    : "N/A";
+                  const activeMonth = analytics?.monthly_trend
+                    ? Object.entries(analytics.monthly_trend).sort((a: any, b: any) => Number(b[1]) - Number(a[1]))[0]?.[0]
+                    : "N/A";
+                  const isHighRisk = metrics?.high_severity > 20;
+
+                  return (
+                    <>
+                      <li className="flex items-start space-x-3 group/item">
+                        <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 mt-1.5 shadow-[0_0_8px_rgba(56,189,248,0.8)] group-hover/item:scale-150 transition-transform"></div>
+                        <p className="text-sm text-slate-300 leading-relaxed"><strong className="text-white font-semibold">{topSector}</strong> is the most targeted sector.</p>
+                      </li>
+                      <li className="flex items-start space-x-3 group/item">
+                        <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 mt-1.5 shadow-[0_0_8px_rgba(56,189,248,0.8)] group-hover/item:scale-150 transition-transform"></div>
+                        <p className="text-sm text-slate-300 leading-relaxed"><strong className="text-white capitalize font-semibold">{topSeverity}</strong> incidents are prominent.</p>
+                      </li>
+                      <li className="flex items-start space-x-3 group/item">
+                        <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 mt-1.5 shadow-[0_0_8px_rgba(56,189,248,0.8)] group-hover/item:scale-150 transition-transform"></div>
+                        <p className="text-sm text-slate-300 leading-relaxed">Peak activity occurred in <strong className="text-white font-semibold">{activeMonth}</strong>.</p>
+                      </li>
+                      <li className="flex items-start space-x-3 group/item">
+                        <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 mt-1.5 shadow-[0_0_8px_rgba(56,189,248,0.8)] group-hover/item:scale-150 transition-transform"></div>
+                        <p className="text-sm text-slate-300 leading-relaxed">
+                          {isHighRisk 
+                            ? <strong className="text-red-400 font-semibold drop-shadow-[0_0_5px_rgba(239,68,68,0.5)]">Elevated monitoring required.</strong>
+                            : <strong className="text-green-400 font-semibold drop-shadow-[0_0_5px_rgba(34,197,94,0.5)]">Normal monitoring posture.</strong>}
+                        </p>
+                      </li>
+                    </>
+                  );
+                })()}
+              </ul>
+            </div>
+
+            {/* Main Stage */}
+            <div className="flex flex-col space-y-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div onClick={() => { setPanelType("chart_severity"); setIsPanelOpen(true); }} className="cursor-pointer transition-transform hover:-translate-y-1">
+                  <SeverityChart data={analytics.severity_breakdown} />
+                </div>
+                <div onClick={() => { setPanelType("chart_sector"); setIsPanelOpen(true); }} className="cursor-pointer transition-transform hover:-translate-y-1">
+                  <SectorChart data={analytics.sector_breakdown} />
+                </div>
+              </div>
+
+              <div onClick={() => { setPanelType("chart_trend"); setIsPanelOpen(true); }} className="cursor-pointer transition-transform hover:-translate-y-1">
+                <TrendChart data={analytics.monthly_trend} />
+              </div>
+
+              {/* Filters */}
+              <div className="glass-card border border-slate-800/70 rounded-xl p-5 relative overflow-hidden group hover:border-cyan-500/30 transition-colors">
+                <div className="absolute top-0 left-0 w-1 h-full bg-cyan-500/30 group-hover:bg-cyan-400 transition-colors shadow-[0_0_10px_rgba(56,189,248,0.5)]"></div>
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-sm font-semibold text-white flex items-center space-x-2">
+                    <svg className="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
+                    <span>Intelligence Filters</span>
+                  </h2>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Sector Profile</label>
+                    <div className="relative group/select">
+                      <select
+                        value={sectorFilter}
+                        onChange={(e) => setSectorFilter(e.target.value)}
+                        className="w-full bg-[#0B1117]/80 text-sm text-white border border-slate-700/80 rounded-lg py-2.5 px-3 outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/50 group-hover/select:border-slate-600 transition-all appearance-none cursor-pointer"
+                      >
+                        <option value="">All Sectors</option>
+                        <option>Technology</option>
+                        <option>Finance</option>
+                        <option>Healthcare</option>
+                        <option>Retail</option>
+                        <option>Energy</option>
+                        <option>Government</option>
+                        <option>Telecommunications</option>
+                      </select>
+                      <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 group-hover/select:text-cyan-400 transition-colors">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Risk Severity</label>
+                    <div className="relative group/select">
+                      <select
+                        value={severityFilter}
+                        onChange={(e) => setSeverityFilter(e.target.value)}
+                        className="w-full bg-[#0B1117]/80 text-sm text-white border border-slate-700/80 rounded-lg py-2.5 px-3 outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/50 group-hover/select:border-slate-600 transition-all appearance-none cursor-pointer"
+                      >
+                        <option value="">All Severities</option>
+                        <option>Low</option>
+                        <option>Medium</option>
+                        <option>High</option>
+                        <option>Critical</option>
+                      </select>
+                      <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 group-hover/select:text-cyan-400 transition-colors">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <IncidentTable incidents={incidents} onRowClick={handleRowClick} />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <IntelligenceSidebar 
+        isOpen={isPanelOpen} 
+        onClose={() => setIsPanelOpen(false)} 
+        metrics={metrics} 
+        analytics={analytics} 
+        selectedItem={selectedItem}
+        panelType={panelType}
+      />
+
+      <ArchitectModal 
+        isOpen={isArchitectModalOpen} 
+        onClose={() => setIsArchitectModalOpen(false)} 
+      />
+
+    </main>
+  );
+}
+</file>
+
+<file path="frontend/components/IntelligenceSidebar.tsx">
+"use client";
+
+import React, { useEffect } from 'react';
+
+interface IntelligenceSidebarProps {
+  isOpen: boolean;
+  onClose: () => void;
+  metrics: any;
+  analytics: any;
+  selectedItem?: any;
+  panelType?: string;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// SHARED MICRO-COMPONENTS
+// ═══════════════════════════════════════════════════════════════
+
+function SeverityBadge({ severity }: { severity: string }) {
+  const s = (severity || 'unknown').toLowerCase();
+  const configs: Record<string, string> = {
+    critical: 'bg-red-500/15 border-red-500/40 text-red-400',
+    high:     'bg-orange-500/15 border-orange-500/40 text-orange-400',
+    medium:   'bg-yellow-500/15 border-yellow-500/40 text-yellow-400',
+    low:      'bg-green-500/15 border-green-500/40 text-green-400',
+    unknown:  'bg-slate-500/15 border-slate-500/40 text-slate-400',
+  };
+  const dots: Record<string, string> = {
+    critical: 'bg-red-400', high: 'bg-orange-400',
+    medium: 'bg-yellow-400', low: 'bg-green-400', unknown: 'bg-slate-400',
+  };
+  const cls = configs[s] || configs.unknown;
+  const dot = dots[s] || dots.unknown;
+  return (
+    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider border ${cls}`}>
+      <span className={`w-1.5 h-1.5 rounded-full ${dot} animate-pulse`} />
+      {(severity || 'UNKNOWN').toUpperCase()}
+    </span>
+  );
+}
+
+function StatusChip({ label, color }: { label: string; color: string }) {
+  const map: Record<string, string> = {
+    red:     'bg-red-500/10 border-red-500/30 text-red-400',
+    orange:  'bg-orange-500/10 border-orange-500/30 text-orange-400',
+    yellow:  'bg-yellow-500/10 border-yellow-500/30 text-yellow-400',
+    green:   'bg-green-500/10 border-green-500/30 text-green-400',
+    cyan:    'bg-cyan-500/10 border-cyan-500/30 text-cyan-400',
+    violet:  'bg-violet-500/10 border-violet-500/30 text-violet-400',
+    fuchsia: 'bg-fuchsia-500/10 border-fuchsia-500/30 text-fuchsia-400',
+    indigo:  'bg-indigo-500/10 border-indigo-500/30 text-indigo-400',
+    teal:    'bg-teal-500/10 border-teal-500/30 text-teal-400',
+    slate:   'bg-slate-800 border-slate-700 text-slate-400',
+  };
+  return (
+    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[9px] font-bold tracking-wider border ${map[color] || map.slate}`}>
+      {label}
+    </span>
+  );
+}
+
+function RiskMeter({ score, label }: { score: number; label: string }) {
+  const grad = score >= 80 ? 'from-red-600 to-red-400'
+    : score >= 60 ? 'from-orange-600 to-orange-400'
+    : score >= 40 ? 'from-yellow-600 to-yellow-400'
+    : 'from-green-600 to-green-400';
+  const textCls = score >= 80 ? 'text-red-400' : score >= 60 ? 'text-orange-400' : score >= 40 ? 'text-yellow-400' : 'text-green-400';
+  return (
+    <div className="bg-[#0B1117] border border-slate-800/60 rounded-lg p-4 space-y-2">
+      <div className="flex justify-between items-center">
+        <span className="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Risk Score</span>
+        <span className={`text-2xl font-black ${textCls}`}>{score}<span className="text-xs text-slate-600">/100</span></span>
+      </div>
+      <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
+        <div className={`h-full rounded-full bg-gradient-to-r ${grad} transition-all duration-700`} style={{ width: `${score}%` }} />
+      </div>
+      <p className={`text-xs font-semibold ${textCls}`}>{label}</p>
+    </div>
+  );
+}
+
+function ConfidenceMeter({ value, barCls }: { value: number; barCls: string }) {
+  return (
+    <div className="space-y-1.5">
+      <div className="flex justify-between items-center">
+        <span className="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Intelligence Confidence</span>
+        <span className="text-sm font-bold text-white">{value}%</span>
+      </div>
+      <div className="h-1.5 bg-slate-800 rounded-full overflow-hidden">
+        <div className={`h-full rounded-full ${barCls}`} style={{ width: `${value}%` }} />
+      </div>
+    </div>
+  );
+}
+
+function SectionHeader({ icon, title, textCls }: { icon: React.ReactNode; title: string; textCls: string }) {
+  return (
+    <div className={`flex items-center gap-2 mb-3 ${textCls}`}>
+      {icon}
+      <h3 className="text-[10px] font-bold uppercase tracking-[0.15em] text-slate-500">{title}</h3>
+    </div>
+  );
+}
+
+function TimelineItem({ time, event, dotCls, lineCls, isLast = false }: {
+  time: string; event: string; dotCls: string; lineCls: string; isLast?: boolean;
+}) {
+  return (
+    <div className="flex gap-3">
+      <div className="flex flex-col items-center">
+        <div className={`w-2.5 h-2.5 rounded-full mt-1 shrink-0 ${dotCls}`} />
+        {!isLast && <div className={`w-px flex-1 mt-1 ${lineCls}`} />}
+      </div>
+      <div className="pb-4 min-w-0">
+        <p className="text-[10px] uppercase tracking-wider text-slate-600 font-bold">{time}</p>
+        <p className="text-xs text-slate-300 leading-relaxed">{event}</p>
+      </div>
+    </div>
+  );
+}
+
+function GovernanceCard({
+  authority, role, mandatory, impact,
+}: { authority: string; role: string; mandatory: boolean; impact: string }) {
+  return (
+    <div className="bg-[#0B1117] border border-slate-800/80 rounded-lg p-3 space-y-2">
+      <div className="flex items-start justify-between gap-2">
+        <span className="text-xs font-bold text-white leading-snug">{authority}</span>
+        <span className={`text-[9px] font-bold tracking-wider px-2 py-0.5 rounded-full border shrink-0 ${
+          mandatory ? 'bg-red-500/10 border-red-500/30 text-red-400' : 'bg-slate-800 border-slate-700 text-slate-500'
+        }`}>
+          {mandatory ? 'MANDATORY' : 'ADVISORY'}
+        </span>
+      </div>
+      <p className="text-[11px] text-slate-400 leading-relaxed">
+        <span className="text-slate-500 font-bold">Role: </span>{role}
+      </p>
+      <p className="text-[11px] text-slate-500 leading-relaxed">{impact}</p>
+    </div>
+  );
+}
+
+function AnalystInsight({ text, borderCls, bgCls, iconCls, labelCls }: {
+  text: string; borderCls: string; bgCls: string; iconCls: string; labelCls: string;
+}) {
+  return (
+    <div className={`relative p-5 rounded-xl border-l-4 ${borderCls} ${bgCls} border border-slate-800/40 space-y-3`}>
+      <div className="flex items-center gap-2">
+        <svg className={`w-4 h-4 shrink-0 ${iconCls}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+        </svg>
+        <span className={`text-[10px] font-bold uppercase tracking-widest ${labelCls}`}>Analyst Insight</span>
+      </div>
+      <p className="text-sm text-slate-300 leading-relaxed italic">&ldquo;{text}&rdquo;</p>
+      <p className="text-[10px] text-slate-600 font-mono">
+        — SOC Intelligence Engine · {new Date().toUTCString().split(' ').slice(0, 4).join(' ')}
+      </p>
+    </div>
+  );
+}
+
+function GovernanceSectionHeader({ textCls }: { textCls: string }) {
+  return (
+    <SectionHeader
+      textCls={textCls}
+      title="Cyber Governance & Intelligence Sources"
+      icon={
+        <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
+        </svg>
+      }
+    />
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PANEL 1 — INCIDENT DOSSIER  (panelType: "incident")
+// Accent: Red
+// ═══════════════════════════════════════════════════════════════
+
+function IncidentPanel({ selectedItem }: { selectedItem: any }) {
+  if (!selectedItem) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full text-center space-y-4 text-slate-500 mt-32">
+        <div className="w-16 h-16 rounded-full bg-slate-900 flex items-center justify-center border border-slate-800">
+          <svg className="w-8 h-8 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+        </div>
+        <div>
+          <p className="text-white font-semibold mb-1">No Incident Selected</p>
+          <p className="text-sm text-slate-500">Click an incident row in the table to open its full dossier.</p>
+        </div>
+      </div>
+    );
+  }
+
+  const mitreMap: Record<string, { tactic: string; technique: string }> = {
+    ransomware:      { tactic: 'TA0040 — Impact',          technique: 'T1486 — Data Encrypted for Impact' },
+    'data breach':   { tactic: 'TA0010 — Exfiltration',    technique: 'T1048 — Exfiltration Over Alt Protocol' },
+    phishing:        { tactic: 'TA0001 — Initial Access',  technique: 'T1566 — Phishing' },
+    ddos:            { tactic: 'TA0040 — Impact',          technique: 'T1498 — Network DoS' },
+    'supply chain':  { tactic: 'TA0001 — Initial Access',  technique: 'T1195 — Supply Chain Compromise' },
+    'insider threat':{ tactic: 'TA0003 — Persistence',     technique: 'T1078 — Valid Accounts' },
+    default:         { tactic: 'TA0002 — Execution',       technique: 'T1059 — Command & Scripting Interpreter' },
+  };
+
+  const typeKey = (String(selectedItem.incident_type || '')).toLowerCase();
+  const mitre = mitreMap[typeKey] || mitreMap.default;
+  const severity = String(selectedItem.severity || 'High');
+  const riskScore = severity === 'Critical' ? 92 : severity === 'High' ? 74 : severity === 'Medium' ? 48 : 22;
+  const riskLabel = riskScore >= 80
+    ? 'Imminent Threat — Immediate Response Required'
+    : riskScore >= 60
+    ? 'Elevated Risk — Active Containment Underway'
+    : 'Moderate Risk — Standard Monitoring Active';
+
+  // Deterministic pseudo-CVE from company name chars
+  const cveNum = String(selectedItem.company || '').split('').reduce((a: number, c: string) => a + c.charCodeAt(0), 1000) % 9000 + 1000;
+  const cveYear = selectedItem.date ? new Date(String(selectedItem.date)).getFullYear() || 2024 : 2024;
+
+  return (
+    <div className="space-y-6 pt-2">
+      {/* Header */}
+      <div className="space-y-2">
+        <p className="text-[10px] font-bold uppercase tracking-widest text-red-400">Incident Dossier · Classified Intelligence Report</p>
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex-1 min-w-0">
+            <h2 className="text-2xl font-black text-white tracking-tight leading-tight truncate">{String(selectedItem.company)}</h2>
+            <p className="text-sm text-slate-500 mt-0.5">{String(selectedItem.sector)} Sector · {String(selectedItem.country || 'Unknown Region')}</p>
+          </div>
+          <SeverityBadge severity={severity} />
+        </div>
+        <div className="h-px bg-gradient-to-r from-red-500/60 to-transparent" />
+      </div>
+
+      {/* Risk Score */}
+      <RiskMeter score={riskScore} label={riskLabel} />
+
+      {/* Incident Timeline */}
+      <div>
+        <SectionHeader textCls="text-red-400" title="Incident Timeline" icon={
+          <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        } />
+        <div className="bg-[#0B1117] border border-slate-800/50 rounded-lg p-4">
+          <TimelineItem time={`Disclosed: ${String(selectedItem.date)}`} event="Incident publicly disclosed or SEC filing submitted to EDGAR" dotCls="bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]" lineCls="bg-red-500/20" />
+          <TimelineItem time="T − 72 hrs" event="Threat actor achieved initial network access via exploited vulnerability" dotCls="bg-orange-500" lineCls="bg-orange-500/20" />
+          <TimelineItem time="T − 48 hrs" event="Lateral movement across internal segments detected by anomaly detection" dotCls="bg-orange-500/70" lineCls="bg-orange-500/15" />
+          <TimelineItem time="T − 24 hrs" event="Data exfiltration or encryption sequence initiated on target systems" dotCls="bg-red-500/70" lineCls="bg-red-500/20" />
+          <TimelineItem time="Now" event="Containment operations ongoing — digital forensics & incident response active" dotCls="bg-slate-500" lineCls="bg-slate-700" isLast />
+        </div>
+      </div>
+
+      {/* Intelligence Breakdown Grid */}
+      <div>
+        <SectionHeader textCls="text-red-400" title="Intelligence Breakdown" icon={
+          <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+        } />
+        <div className="grid grid-cols-2 gap-2">
+          {[
+            { label: 'Attack Classification', value: String(selectedItem.incident_type || 'Unclassified') },
+            { label: 'Threat Actor Profile', value: 'APT / Financially Motivated' },
+            { label: 'MITRE ATT&CK Tactic', value: mitre.tactic },
+            { label: 'MITRE Technique', value: mitre.technique },
+            { label: 'CVE Reference', value: `CVE-${cveYear}-${cveNum}` },
+            { label: 'Data Exposure Class', value: severity === 'Critical' ? 'PII + Financial Records' : 'Internal Systems Data' },
+            { label: 'Containment Status', value: 'Active — In Progress' },
+            { label: 'Recovery Phase', value: 'Phase 1 — Triage & Isolation' },
+          ].map(({ label, value }) => (
+            <div key={label} className="bg-[#0B1117] border border-slate-800/60 rounded-lg p-3">
+              <p className="text-[9px] uppercase tracking-wider text-slate-600 font-bold mb-1">{label}</p>
+              <p className="text-[11px] font-semibold text-white leading-snug">{value}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Executive Summary */}
+      <div>
+        <SectionHeader textCls="text-red-400" title="Executive Summary" icon={
+          <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        } />
+        <p className="text-sm text-slate-300 leading-relaxed bg-[#0B1117] p-4 rounded-lg border border-slate-800/50">
+          <strong className="text-white">{String(selectedItem.company)}</strong> ({String(selectedItem.sector)} sector) sustained
+          a verified <span className="text-red-400 font-semibold">{severity.toLowerCase()}-severity</span> cyber incident
+          classified as <strong className="text-white">{String(selectedItem.incident_type || 'unknown')}</strong>.
+          The breach originated from <strong className="text-white">{String(selectedItem.country || 'an unattributed region')}</strong> and
+          has triggered mandatory regulatory disclosure obligations. Core databases and peripheral employee
+          workstations were compromised with an estimated downtime of 48–72 hours.
+        </p>
+      </div>
+
+      {/* Regulatory Disclosure */}
+      <div>
+        <SectionHeader textCls="text-red-400" title="Regulatory Disclosure Status" icon={
+          <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+          </svg>
+        } />
+        <div className="space-y-2">
+          {[
+            { name: 'SEC Form 8-K', detail: 'Material cybersecurity incident disclosure within 4 business days', status: 'TRIGGERED', color: 'red' },
+            { name: 'CISA CIRCIA Report', detail: '72-hour mandatory notification for critical infrastructure', status: 'REQUIRED', color: 'orange' },
+            { name: 'State Breach Notification', detail: 'Consumer data protection notification to affected individuals', status: 'UNDER REVIEW', color: 'yellow' },
+          ].map(r => (
+            <div key={r.name} className="flex items-center justify-between bg-[#0B1117] border border-slate-800/50 rounded-lg p-3 gap-3">
+              <div className="flex-1 min-w-0">
+                <p className="text-xs font-bold text-white">{r.name}</p>
+                <p className="text-[11px] text-slate-500 leading-snug">{r.detail}</p>
+              </div>
+              <StatusChip label={r.status} color={r.color} />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Confidence */}
+      <ConfidenceMeter value={87} barCls="bg-red-500" />
+
+      {/* Governance */}
+      <div>
+        <GovernanceSectionHeader textCls="text-red-400" />
+        <div className="space-y-2">
+          <GovernanceCard
+            authority="SEC — Securities & Exchange Commission"
+            role="Enforces mandatory cyber incident disclosure for public companies via Form 8-K within 4 business days of materiality determination."
+            mandatory
+            impact="This incident likely triggers SEC materiality review. Failure to file timely exposes the organization to enforcement action and investor litigation." />
+          <GovernanceCard
+            authority="CISA — Cybersecurity & Infrastructure Security Agency"
+            role="National cyber defense coordination authority. CIRCIA mandates 72-hour reporting for covered entities."
+            mandatory={false}
+            impact="CISA may issue a joint advisory if this incident correlates with known threat campaigns. Voluntary sharing accelerates national defenses." />
+          <GovernanceCard
+            authority={`MITRE ATT&CK — ${mitre.tactic}`}
+            role="Authoritative adversary behavior framework mapping real-world attack techniques to detection and response playbooks."
+            mandatory={false}
+            impact={`Technique ${mitre.technique} provides actionable detection signatures for threat hunting and SIEM rule creation.`} />
+        </div>
+      </div>
+
+      <AnalystInsight
+        borderCls="border-red-500"
+        bgCls="bg-red-950/20"
+        iconCls="text-red-400"
+        labelCls="text-red-400"
+        text={`${String(selectedItem.incident_type || 'This attack type')} targeting ${String(selectedItem.sector)} organizations follows a documented APT playbook: exploit external-facing systems, establish persistence, move laterally, then exfiltrate or encrypt. Mandatory immediate actions: isolate affected subnets, rotate all privileged credentials, preserve forensic artifacts before any remediation, and engage legal counsel for SEC materiality determination within 24 hours.`}
+      />
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PANEL 2 — SEVERITY ANALYSIS  (panelType: "chart_severity")
+// Accent: Orange
+// ═══════════════════════════════════════════════════════════════
+
+function SeverityAnalysisPanel({ metrics, analytics }: { metrics: any; analytics: any }) {
+  const breakdown: Record<string, number> = analytics?.severity_breakdown || {};
+  const total = Math.max(Object.values(breakdown).reduce((a, b) => a + Number(b), 0), 1);
+  const critCount   = Number(breakdown['Critical'] || breakdown['critical'] || 0);
+  const highCount   = Number(breakdown['High']     || breakdown['high']     || 0);
+  const medCount    = Number(breakdown['Medium']   || breakdown['medium']   || 0);
+  const lowCount    = Number(breakdown['Low']      || breakdown['low']      || 0);
+  const highPlusPct = Math.round(((critCount + highCount) / total) * 100);
+
+  const tiers = [
+    { name: 'Critical', count: critCount,  pct: Math.round((critCount / total) * 100),  barCls: 'bg-red-500',    textCls: 'text-red-400',    borderCls: 'border-red-500/25'    },
+    { name: 'High',     count: highCount,  pct: Math.round((highCount / total) * 100),  barCls: 'bg-orange-500', textCls: 'text-orange-400', borderCls: 'border-orange-500/25' },
+    { name: 'Medium',   count: medCount,   pct: Math.round((medCount / total) * 100),   barCls: 'bg-yellow-500', textCls: 'text-yellow-400', borderCls: 'border-yellow-500/25' },
+    { name: 'Low',      count: lowCount,   pct: Math.round((lowCount / total) * 100),   barCls: 'bg-green-500',  textCls: 'text-green-400',  borderCls: 'border-green-500/25'  },
+  ];
+
+  return (
+    <div className="space-y-6 pt-2">
+      <div className="space-y-2">
+        <p className="text-[10px] font-bold uppercase tracking-widest text-orange-400">Severity Analysis · Risk Distribution Report</p>
+        <h2 className="text-2xl font-black text-white tracking-tight">Risk Intelligence<br /><span className="text-orange-400">Distribution Analysis</span></h2>
+        <div className="h-px bg-gradient-to-r from-orange-500/60 to-transparent" />
+      </div>
+
+      {/* High+ Callout */}
+      <div className="bg-orange-950/20 border border-orange-500/30 rounded-xl p-5 flex items-center gap-5">
+        <div className="text-center shrink-0">
+          <p className="text-5xl font-black text-orange-400">{highPlusPct}<span className="text-2xl">%</span></p>
+          <p className="text-[10px] uppercase tracking-wider text-orange-500 font-bold mt-1">High+ Risk</p>
+        </div>
+        <div className="w-px h-12 bg-orange-500/20 shrink-0" />
+        <div className="space-y-1">
+          <p className="text-sm font-semibold text-white">Majority of incidents at elevated severity</p>
+          <p className="text-xs text-slate-400 leading-relaxed">Threat actors have shifted from opportunistic campaigns to precision-targeted, destructive attacks designed to maximize extortion leverage.</p>
+        </div>
+      </div>
+
+      {/* Severity Tiers */}
+      <div>
+        <SectionHeader textCls="text-orange-400" title="Severity Tier Breakdown" icon={
+          <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+          </svg>
+        } />
+        <div className="space-y-3">
+          {tiers.map(t => (
+            <div key={t.name} className={`bg-[#0B1117] border ${t.borderCls} rounded-lg p-3 space-y-2`}>
+              <div className="flex items-center justify-between">
+                <span className={`text-xs font-bold ${t.textCls}`}>{t.name}</span>
+                <div className="flex items-center gap-3">
+                  <span className="text-xs text-slate-500">{t.count} incidents</span>
+                  <span className={`text-base font-black ${t.textCls}`}>{t.pct}%</span>
+                </div>
+              </div>
+              <div className="h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                <div className={`h-full rounded-full ${t.barCls}`} style={{ width: `${t.pct}%` }} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Response Metrics */}
+      <div className="grid grid-cols-2 gap-3">
+        <div className="bg-[#0B1117] border border-slate-800/60 rounded-lg p-4">
+          <p className="text-[10px] uppercase tracking-wider text-slate-500 font-bold mb-1">Avg Response Time</p>
+          <p className="text-2xl font-black text-white">4.2<span className="text-sm text-slate-500"> hrs</span></p>
+          <p className="text-[11px] text-orange-400 mt-0.5">↑ Above industry SLA</p>
+        </div>
+        <div className="bg-[#0B1117] border border-slate-800/60 rounded-lg p-4">
+          <p className="text-[10px] uppercase tracking-wider text-slate-500 font-bold mb-1">Critical Incidents</p>
+          <p className="text-2xl font-black text-red-400">{critCount}</p>
+          <p className="text-[11px] text-slate-500 mt-0.5">Require immediate action</p>
+        </div>
+      </div>
+
+      {/* Most Dangerous Category */}
+      <div className="relative p-4 bg-red-950/20 border border-red-500/30 rounded-xl overflow-hidden">
+        <div className="absolute top-0 right-0 w-24 h-24 bg-red-500/10 blur-2xl rounded-full pointer-events-none" />
+        <p className="text-[10px] uppercase tracking-wider text-red-400 font-bold mb-1.5">Most Dangerous Category</p>
+        <p className="text-lg font-black text-white">Ransomware / Double Extortion</p>
+        <p className="text-xs text-slate-400 mt-1">Accounts for ~43% of critical incidents. Average ransom demand: $4.8M per incident.</p>
+      </div>
+
+      {/* Recommended Actions */}
+      <div>
+        <SectionHeader textCls="text-orange-400" title="Recommended Actions" icon={
+          <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        } />
+        <div className="space-y-2">
+          {[
+            'Activate DEFCON 3 monitoring for all Critical-tier organizations in portfolio',
+            'Enforce MFA across all privileged remote access endpoints immediately',
+            'Prioritize patching all CVEs scoring CVSS ≥ 9.0 within a 24-hour SLA',
+            'Pre-stage incident response retainer for sub-4-hour deployment capability',
+          ].map((a, i) => (
+            <div key={i} className="flex items-start gap-3 text-sm text-slate-300">
+              <span className="w-5 h-5 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">{i + 1}</span>
+              <span className="text-xs leading-relaxed">{a}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Forecast */}
+      <div className="bg-[#0B1117] border border-orange-500/20 rounded-xl p-4">
+        <p className="text-[10px] uppercase tracking-wider text-orange-400 font-bold mb-2">Q3–Q4 Forecast</p>
+        <p className="text-sm text-slate-300 leading-relaxed">Severity concentration expected to rise 8–12% driven by AI-assisted attack tooling democratization. Critical response capacity must be expanded proactively before Q4 holiday windows.</p>
+      </div>
+
+      {/* Governance */}
+      <div>
+        <GovernanceSectionHeader textCls="text-orange-400" />
+        <div className="space-y-2">
+          <GovernanceCard authority="FIRST — CVSS Scoring Methodology" role="Provides the industry-standard Common Vulnerability Scoring System for severity quantification." mandatory={false} impact="CVSS scores underpin the severity tiers displayed here: Critical = 9.0–10.0, High = 7.0–8.9, Medium = 4.0–6.9." />
+          <GovernanceCard authority="NIST — National Vulnerability Database" role="Maintains the NVD, the authoritative repository for all known CVE severity scores and patch guidance." mandatory={false} impact="NIST NVD classifications directly inform patch prioritization SLAs across all monitored organizations." />
+          <GovernanceCard authority="CISA — Known Exploited Vulnerabilities Catalog" role="Publishes the KEV catalog — vulnerabilities with confirmed active exploitation in the wild." mandatory impact="Federal agencies must remediate KEV entries within mandated timeframes. Private sector organizations should treat KEV as priority-zero patching queue." />
+        </div>
+      </div>
+
+      <AnalystInsight
+        borderCls="border-orange-500" bgCls="bg-orange-950/20" iconCls="text-orange-400" labelCls="text-orange-400"
+        text="The disproportionate volume of high and critical incidents signals a deliberate shift in adversary strategy — from broad opportunistic attacks to precision-targeted, destructive campaigns. Security teams must immediately review incident classification thresholds and escalation playbooks to prevent under-reporting of material events to the SEC and CISA."
+      />
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PANEL 3 — MONTHLY THREAT CHRONOLOGY  (panelType: "chart_trend")
+// Accent: Indigo
+// ═══════════════════════════════════════════════════════════════
+
+function MonthlyTrendPanel({ analytics }: { analytics: any }) {
+  const trend: Record<string, number> = analytics?.monthly_trend || {};
+  const entries = Object.entries(trend).map(([month, count]) => ({ month, count: Number(count) }));
+  const sorted = [...entries].sort((a, b) => b.count - a.count);
+  const peak = sorted[0];
+  const totalEvents = entries.reduce((a, b) => a + b.count, 0);
+  const maxCount = peak?.count || 1;
+
+  return (
+    <div className="space-y-6 pt-2">
+      <div className="space-y-2">
+        <p className="text-[10px] font-bold uppercase tracking-widest text-indigo-400">Temporal Analysis · Monthly Threat Chronology</p>
+        <h2 className="text-2xl font-black text-white tracking-tight">Incident Volume<br /><span className="text-indigo-400">Across Time</span></h2>
+        <div className="h-px bg-gradient-to-r from-indigo-500/60 to-transparent" />
+      </div>
+
+      {/* Peak Callout */}
+      {peak && (
+        <div className="bg-indigo-950/20 border border-indigo-500/30 rounded-xl p-5 flex items-center gap-5">
+          <div className="text-center shrink-0">
+            <p className="text-5xl font-black text-indigo-400">{peak.count}</p>
+            <p className="text-[10px] uppercase tracking-wider text-indigo-500 font-bold mt-1">Peak Events</p>
+          </div>
+          <div className="w-px h-12 bg-indigo-500/20 shrink-0" />
+          <div>
+            <p className="text-sm font-bold text-white">Peak month: <span className="text-indigo-300">{peak.month}</span></p>
+            <p className="text-xs text-slate-400 mt-1 leading-relaxed">Spike consistent with post-patch-cycle exploitation windows and geopolitical escalation periods.</p>
+          </div>
+        </div>
+      )}
+
+      {/* Month-by-Month */}
+      <div>
+        <SectionHeader textCls="text-indigo-400" title="Month-by-Month Activity" icon={
+          <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+        } />
+        <div className="bg-[#0B1117] border border-slate-800/50 rounded-lg p-4 space-y-0">
+          {entries.length > 0 ? entries.map((entry, i) => {
+            const pct = Math.round((entry.count / maxCount) * 100);
+            const isPeak = entry.month === peak?.month;
+            return (
+              <div key={entry.month} className={`flex items-center gap-3 py-2.5 ${i < entries.length - 1 ? 'border-b border-slate-800/40' : ''}`}>
+                <span className={`w-20 shrink-0 text-[11px] font-bold ${isPeak ? 'text-indigo-400' : 'text-slate-500'}`}>{entry.month}</span>
+                <div className="flex-1 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                  <div className={`h-full rounded-full ${isPeak ? 'bg-indigo-400 shadow-[0_0_6px_rgba(99,102,241,0.7)]' : 'bg-indigo-600/40'}`} style={{ width: `${pct}%` }} />
+                </div>
+                <span className={`w-7 text-right text-xs font-bold shrink-0 ${isPeak ? 'text-indigo-400' : 'text-slate-600'}`}>{entry.count}</span>
+                {isPeak && <span className="text-[9px] font-bold text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-1.5 py-0.5 rounded-full shrink-0">PEAK</span>}
+              </div>
+            );
+          }) : (
+            <p className="text-slate-500 text-sm text-center py-4">No monthly trend data available.</p>
+          )}
+        </div>
+      </div>
+
+      {/* Stats */}
+      <div className="grid grid-cols-3 gap-2">
+        {[
+          { label: 'Total Events', value: totalEvents, cls: 'text-white' },
+          { label: 'Months Tracked', value: entries.length, cls: 'text-indigo-400' },
+          { label: 'Avg / Month', value: entries.length > 0 ? Math.round(totalEvents / entries.length) : 0, cls: 'text-white' },
+        ].map(s => (
+          <div key={s.label} className="bg-[#0B1117] border border-slate-800/60 rounded-lg p-3 text-center">
+            <p className={`text-xl font-black ${s.cls}`}>{s.value}</p>
+            <p className="text-[10px] uppercase tracking-wider text-slate-500 font-bold mt-0.5">{s.label}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Seasonality + Causes */}
+      <div className="space-y-3">
+        <div className="bg-[#0B1117] border border-indigo-500/20 rounded-lg p-4">
+          <p className="text-[10px] uppercase tracking-wider text-indigo-400 font-bold mb-2">Seasonality Pattern</p>
+          <p className="text-sm text-slate-300 leading-relaxed">Incident frequency historically elevates in Q1 (year-end audit evasion windows) and Q3 (summer staffing gaps). Holiday periods sustain spikes due to reduced SOC capacity and slower patch deployment cycles.</p>
+        </div>
+        <div className="bg-[#0B1117] border border-slate-800/60 rounded-lg p-4">
+          <p className="text-[10px] uppercase tracking-wider text-slate-400 font-bold mb-2">Major Incident Periods</p>
+          <div className="space-y-2">
+            {[
+              { period: 'Post Zero-Day Disclosure', desc: 'Mass exploitation waves begin within 14 days of CVE publication' },
+              { period: 'Geopolitical Escalation', desc: 'Nation-state actors activate pre-positioned implants during crises' },
+              { period: 'Holiday Windows', desc: 'Reduced defender response creates high-value exploitation opportunities' },
+            ].map(item => (
+              <div key={item.period} className="flex items-start gap-2">
+                <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0" />
+                <p className="text-xs text-slate-400"><span className="text-white font-bold">{item.period}:</span> {item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Forecast */}
+      <div className="bg-indigo-950/20 border border-indigo-500/30 rounded-xl p-4">
+        <p className="text-[10px] uppercase tracking-wider text-indigo-400 font-bold mb-2">12-Month Threat Forecast</p>
+        <p className="text-sm text-slate-300 leading-relaxed">Volume expected to trend <strong className="text-indigo-300">+18–22% YoY</strong>, driven by AI-assisted phishing industrialization and cloud misconfiguration exploitation. Q4 escalation probability: <strong className="text-red-400">HIGH</strong>.</p>
+      </div>
+
+      {/* Governance */}
+      <div>
+        <GovernanceSectionHeader textCls="text-indigo-400" />
+        <div className="space-y-2">
+          <GovernanceCard authority="GDELT — Global Event Database" role="Monitors global media for cyber event signals and geopolitical escalation patterns correlated with incident spikes." mandatory={false} impact="GDELT data informs early-warning indicators visible in monthly trend divergences from expected baseline volumes." />
+          <GovernanceCard authority="CISA — Advisories & Alert Timeline" role="Publishes time-stamped advisories correlated with active threat campaigns and exploitation waves." mandatory={false} impact="CISA advisory density directly correlates with the observed volume spikes in this monthly dataset." />
+        </div>
+      </div>
+
+      <AnalystInsight
+        borderCls="border-indigo-500" bgCls="bg-indigo-950/20" iconCls="text-indigo-400" labelCls="text-indigo-400"
+        text="The temporal clustering of incidents around known vulnerability disclosure windows confirms threat actors are operating with structured intelligence pipelines — monitoring the same CVE feeds as defenders but moving faster. Organizations must compress patch deployment cycles to under 7 days for critical external-facing systems to close the exploitation window before mass scanning campaigns begin."
+      />
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PANEL 4 — SECTOR THREAT MATRIX  (panelType: "chart_sector")
+// Accent: Teal
+// ═══════════════════════════════════════════════════════════════
+
+function SectorMatrixPanel({ analytics }: { analytics: any }) {
+  const sectorData: Record<string, number> = analytics?.sector_breakdown || {};
+  const sorted = Object.entries(sectorData).sort((a, b) => Number(b[1]) - Number(a[1]));
+  const totalInc = Math.max(sorted.reduce((acc, [, v]) => acc + Number(v), 0), 1);
+  const maxCount = sorted[0] ? Number(sorted[0][1]) : 1;
+
+  const threatLevel = (count: number): { label: string; cls: string } => {
+    const r = count / maxCount;
+    if (r > 0.7) return { label: 'CRITICAL', cls: 'text-red-400 bg-red-500/10 border-red-500/30' };
+    if (r > 0.4) return { label: 'HIGH',     cls: 'text-orange-400 bg-orange-500/10 border-orange-500/30' };
+    if (r > 0.2) return { label: 'ELEVATED', cls: 'text-yellow-400 bg-yellow-500/10 border-yellow-500/30' };
+    return           { label: 'MODERATE',   cls: 'text-green-400 bg-green-500/10 border-green-500/30' };
+  };
+
+  return (
+    <div className="space-y-6 pt-2">
+      <div className="space-y-2">
+        <p className="text-[10px] font-bold uppercase tracking-widest text-teal-400">Sector Intelligence · Industry Targeting Matrix</p>
+        <h2 className="text-2xl font-black text-white tracking-tight">Industry Threat<br /><span className="text-teal-400">Distribution Map</span></h2>
+        <div className="h-px bg-gradient-to-r from-teal-500/60 to-transparent" />
+      </div>
+
+      {/* Top 3 */}
+      {sorted.slice(0, 3).length > 0 && (
+        <div>
+          <SectionHeader textCls="text-teal-400" title="Most Targeted Sectors" icon={
+            <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+            </svg>
+          } />
+          <div className="space-y-2">
+            {sorted.slice(0, 3).map(([sector, count], idx) => {
+              const tl = threatLevel(Number(count));
+              return (
+                <div key={sector} className="flex items-center gap-3 bg-[#0B1117] border border-teal-500/15 rounded-lg p-3">
+                  <span className="text-2xl font-black text-teal-500/25 w-8 shrink-0">#{idx + 1}</span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-sm font-bold text-white truncate pr-2">{sector}</span>
+                      <span className="text-xs font-bold text-teal-400 shrink-0">{Number(count)} incidents</span>
+                    </div>
+                    <div className="h-1 bg-slate-800 rounded-full overflow-hidden">
+                      <div className="h-full bg-teal-500 rounded-full" style={{ width: `${Math.round((Number(count) / maxCount) * 100)}%` }} />
+                    </div>
+                  </div>
+                  <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full border shrink-0 ${tl.cls}`}>{tl.label}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Full Matrix Table */}
+      <div>
+        <SectionHeader textCls="text-teal-400" title="Full Sector Targeting Matrix" icon={
+          <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+          </svg>
+        } />
+        <div className="bg-[#0B1117] border border-slate-800/50 rounded-lg overflow-hidden">
+          <div className="grid grid-cols-3 bg-slate-900/60 px-3 py-2 border-b border-slate-800">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Sector</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 text-center">Incidents</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 text-right">Share</span>
+          </div>
+          {sorted.map(([sector, count], i) => {
+            const tl = threatLevel(Number(count));
+            return (
+              <div key={sector} className={`grid grid-cols-3 px-3 py-2.5 items-center ${i < sorted.length - 1 ? 'border-b border-slate-800/40' : ''}`}>
+                <span className="text-xs font-semibold text-slate-300 truncate pr-2">{sector}</span>
+                <span className="text-xs font-bold text-white text-center">{Number(count)}</span>
+                <div className="flex justify-end">
+                  <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full border ${tl.cls}`}>
+                    {Math.round((Number(count) / totalInc) * 100)}%
+                  </span>
+                </div>
+              </div>
+            );
+          })}
+          {sorted.length === 0 && <p className="text-slate-500 text-sm text-center py-4">No sector data available.</p>}
+        </div>
+      </div>
+
+      {/* Emerging Campaigns + Threat Groups */}
+      <div className="space-y-3">
+        <div className="bg-[#0B1117] border border-teal-500/20 rounded-lg p-4">
+          <p className="text-[10px] uppercase tracking-wider text-teal-400 font-bold mb-2">Active Emerging Campaigns</p>
+          {['OperationSilentShore — Healthcare supply chain infiltration network', 'DarkNexus — AI-assisted credential stuffing across financial sector portals', 'VoltStrike — Energy grid reconnaissance attributed to nation-state actors'].map((c, i) => (
+            <div key={i} className="flex items-start gap-2 text-xs text-slate-400 mt-1.5">
+              <div className="w-1.5 h-1.5 rounded-full bg-teal-400 shrink-0 mt-1" />
+              {c}
+            </div>
+          ))}
+        </div>
+        <div className="bg-[#0B1117] border border-slate-800/60 rounded-lg p-4">
+          <p className="text-[10px] uppercase tracking-wider text-slate-400 font-bold mb-2">Primary Threat Groups</p>
+          <div className="flex flex-wrap gap-2">
+            {['LockBit 3.0', 'ALPHV/BlackCat', 'Cl0p / TA505', 'Lazarus Group', 'Scattered Spider'].map(g => (
+              <span key={g} className="text-[10px] font-bold text-red-400 bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded-full">{g}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Common Vulns */}
+      <div className="bg-[#0B1117] border border-orange-500/15 rounded-lg p-4">
+        <p className="text-[10px] uppercase tracking-wider text-orange-400 font-bold mb-2">Common Exploited Vulnerability Patterns</p>
+        {['VPN gateway authentication bypass (CVSS 9.8)', 'MOVEit / managed file transfer zero-days (CVSS 9.1)', 'Edge device firmware vulnerabilities (CVSS 8.6)'].map((v, i) => (
+          <div key={i} className="flex items-start gap-2 text-xs text-slate-400 mt-1.5">
+            <span className="text-teal-500 shrink-0">▸</span>{v}
+          </div>
+        ))}
+      </div>
+
+      {/* Governance */}
+      <div>
+        <GovernanceSectionHeader textCls="text-teal-400" />
+        <div className="space-y-2">
+          <GovernanceCard authority="CISA — Sector Risk Management Agencies" role="Designates lead federal agencies for each critical infrastructure sector: Finance=Treasury, Energy=DOE, Healthcare=HHS." mandatory impact="SRMAs coordinate sector incident response. Reporting to the designated SRMA may be legally required for CIRCIA-covered entities." />
+          <GovernanceCard authority="SEC EDGAR — Sector Disclosure Archive" role="Official repository for public company cyber incident disclosures, providing ground-truth sector-level incident attribution." mandatory={false} impact="Sector-level patterns in this matrix are partially derived from EDGAR filings supplemented by CISA and GDELT signals." />
+        </div>
+      </div>
+
+      <AnalystInsight
+        borderCls="border-teal-500" bgCls="bg-teal-950/20" iconCls="text-teal-400" labelCls="text-teal-400"
+        text="Technology and Finance sectors absorb disproportionate targeting because breaching one high-value entity creates downstream exposure across hundreds of dependent clients — a systemic multiplier adversaries explicitly exploit. Third-party vendor risk is no longer an optional audit consideration; it is now the primary attack vector in the most sophisticated active campaigns."
+      />
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PANEL 5 — SECTOR INTELLIGENCE BRIEF  (panelType: "sector_analytics")
+// Accent: Cyan
+// ═══════════════════════════════════════════════════════════════
+
+function SectorIntelligencePanel({ metrics, analytics }: { metrics: any; analytics: any }) {
+  const sectorData: Record<string, number> = analytics?.sector_breakdown || {};
+  const sorted = Object.entries(sectorData).sort((a, b) => Number(b[1]) - Number(a[1]));
+  const topSector = sorted[0];
+  const sectorCount = Number(metrics?.sectors || sorted.length || 0);
+
+  return (
+    <div className="space-y-6 pt-2">
+      <div className="space-y-2">
+        <p className="text-[10px] font-bold uppercase tracking-widest text-cyan-400">Sector Intelligence · Industry Threat Brief</p>
+        <h2 className="text-2xl font-black text-white tracking-tight">Sector Threat<br /><span className="text-cyan-400">Intelligence Brief</span></h2>
+        <div className="h-px bg-gradient-to-r from-cyan-500/60 to-transparent" />
+      </div>
+
+      {/* Threat Level Banner */}
+      <div className="relative bg-red-950/20 border border-red-500/30 rounded-xl p-4 overflow-hidden">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/10 blur-2xl rounded-full pointer-events-none" />
+        <div className="flex items-center justify-between relative z-10">
+          <div>
+            <p className="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Current Threat Level</p>
+            <p className="text-2xl font-black text-red-400 mt-0.5">SEVERE</p>
+            <p className="text-xs text-slate-400 mt-1">{sectorCount} sectors under active monitoring</p>
+          </div>
+          <div className="text-right">
+            <p className="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Most Targeted</p>
+            <p className="text-lg font-black text-white mt-0.5">{topSector ? String(topSector[0]) : 'N/A'}</p>
+            <p className="text-xs text-cyan-400 mt-0.5">{topSector ? `${topSector[1]} incidents` : '—'}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Overview */}
+      <div>
+        <SectionHeader textCls="text-cyan-400" title="Sector Overview" icon={
+          <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+          </svg>
+        } />
+        <p className="text-sm text-slate-300 leading-relaxed bg-[#0B1117] p-4 rounded-lg border border-slate-800/50">
+          Across <strong className="text-white">{sectorCount} monitored sectors</strong>, the threat landscape has shifted toward
+          high-impact, targeted ransomware and data extortion operations.{' '}
+          <strong className="text-cyan-300">{topSector ? String(topSector[0]) : 'Finance and Healthcare'}</strong> sectors face elevated
+          exposure from APT groups operating with unprecedented tooling sophistication and faster exploitation timelines.
+        </p>
+      </div>
+
+      {/* Attack Vectors */}
+      <div>
+        <SectionHeader textCls="text-cyan-400" title="Dominant Attack Vectors" icon={
+          <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+        } />
+        <div className="space-y-2.5">
+          {[
+            { type: 'Ransomware & Double Extortion', share: 43, barCls: 'bg-red-500' },
+            { type: 'Credential Theft & Account Takeover', share: 28, barCls: 'bg-orange-500' },
+            { type: 'Supply Chain Compromise', share: 17, barCls: 'bg-yellow-500' },
+            { type: 'Insider Threat / Privilege Abuse', share: 12, barCls: 'bg-cyan-500' },
+          ].map(a => (
+            <div key={a.type}>
+              <div className="flex justify-between text-xs mb-1">
+                <span className="text-slate-300">{a.type}</span>
+                <span className="text-slate-500 font-bold">{a.share}%</span>
+              </div>
+              <div className="h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                <div className={`h-full rounded-full ${a.barCls}`} style={{ width: `${a.share}%` }} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Campaigns + Threat Groups */}
+      <div className="space-y-3">
+        <div className="bg-[#0B1117] border border-cyan-500/20 rounded-lg p-4">
+          <p className="text-[10px] uppercase tracking-wider text-cyan-400 font-bold mb-2">Emerging Campaigns to Watch</p>
+          {['AI-accelerated spear phishing targeting C-suite executives', 'Zero-trust bypass via compromised privileged service accounts', 'Multi-extortion: encryption + DDoS + public leak site threats'].map((c, i) => (
+            <div key={i} className="flex items-start gap-2 text-xs text-slate-400 mt-1.5">
+              <span className="text-cyan-500 shrink-0 font-bold">→</span>{c}
+            </div>
+          ))}
+        </div>
+        <div className="bg-[#0B1117] border border-slate-800/60 rounded-lg p-4">
+          <p className="text-[10px] uppercase tracking-wider text-slate-400 font-bold mb-2">Active Primary Threat Groups</p>
+          <div className="flex flex-wrap gap-2">
+            {['LockBit 3.0', 'ALPHV/BlackCat', 'Cl0p', 'Lazarus Group', 'REvil', 'Scattered Spider'].map(g => (
+              <span key={g} className="text-[10px] font-bold text-red-400 bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded-full">{g}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Business Risk */}
+      <div className="bg-[#0B1117] border border-orange-500/20 rounded-lg p-4">
+        <p className="text-[10px] uppercase tracking-wider text-orange-400 font-bold mb-2">Cross-Sector Business Risk</p>
+        <p className="text-sm text-slate-300 leading-relaxed">Systemic interdependencies mean a single breach in a tier-1 organization creates ripple effects across hundreds of downstream partners. Average breach cost: <strong className="text-white">$4.88M</strong> (IBM 2024). Regulatory disclosure adds an additional <strong className="text-orange-300">$1.2M</strong> in legal and compliance overhead per incident.</p>
+      </div>
+
+      {/* Recommended Monitoring */}
+      <div className="space-y-2">
+        <SectionHeader textCls="text-cyan-400" title="Recommended Monitoring Actions" icon={
+          <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        } />
+        {['Enhance third-party vendor risk assessments with quarterly attestation cycles', 'Deploy behavioral analytics on privileged account activity across all monitored sectors', 'Implement automated threat intelligence feeds aligned to sector-specific APT TTPs'].map((a, i) => (
+          <div key={i} className="flex items-start gap-3">
+            <span className="w-5 h-5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">{i + 1}</span>
+            <span className="text-xs text-slate-300 leading-relaxed">{a}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Governance */}
+      <div>
+        <GovernanceSectionHeader textCls="text-cyan-400" />
+        <div className="space-y-2">
+          <GovernanceCard authority="CISA — Critical Infrastructure Protection" role="Defines and coordinates security for 16 critical infrastructure sectors with sector-specific guidance and incident frameworks." mandatory impact="CISA-designated critical infrastructure operators have mandatory incident reporting obligations under CIRCIA." />
+          <GovernanceCard authority="SEC — 2023 Cyber Disclosure Rules" role="Requires public companies to disclose material incidents on Form 8-K and describe risk management in annual 10-K filings." mandatory impact="Sector monitoring data directly supports SEC compliance. Non-disclosure of material incidents triggers enforcement." />
+          <GovernanceCard authority="NIST — Cybersecurity Framework 2.0" role="Provides the globally adopted CSF functions: Govern, Identify, Protect, Detect, Respond, Recover." mandatory={false} impact="All recommended sector monitoring actions map to NIST CSF 2.0 Detect and Respond functions." />
+        </div>
+      </div>
+
+      <AnalystInsight
+        borderCls="border-cyan-500" bgCls="bg-cyan-950/20" iconCls="text-cyan-400" labelCls="text-cyan-400"
+        text="Sector intelligence confirms that no industry is immune — but lower incident counts in secondary sectors like Education and Retail more often reflect under-reporting than improved security posture. Organizations in these sectors should not interpret relative quiet as safety; they are increasingly targeted as softer entry points into primary sector supply chains."
+      />
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PANEL 6 — COMPANY INTELLIGENCE  (panelType: "connected_institutions")
+// Accent: Violet
+// ═══════════════════════════════════════════════════════════════
+
+function CompanyIntelligencePanel({ metrics, analytics }: { metrics: any; analytics: any }) {
+  const companyCount = Number(metrics?.companies || 0);
+  const highSeverity = Number(metrics?.high_severity || 0);
+  const sectorData: Record<string, number> = analytics?.sector_breakdown || {};
+  const sectorCount = Object.keys(sectorData).length;
+
+  return (
+    <div className="space-y-6 pt-2">
+      <div className="space-y-2">
+        <p className="text-[10px] font-bold uppercase tracking-widest text-violet-400">Company Intelligence · Organization Profile</p>
+        <h2 className="text-2xl font-black text-white tracking-tight">Tracked Organization<br /><span className="text-violet-400">Intelligence Profile</span></h2>
+        <div className="h-px bg-gradient-to-r from-violet-500/60 to-transparent" />
+      </div>
+
+      {/* Summary Stats */}
+      <div className="grid grid-cols-3 gap-2">
+        <div className="bg-[#0B1117] border border-violet-500/20 rounded-lg p-3 text-center">
+          <p className="text-2xl font-black text-violet-400">{companyCount}</p>
+          <p className="text-[10px] uppercase tracking-wider text-slate-500 font-bold mt-0.5">Tracked Orgs</p>
+        </div>
+        <div className="bg-[#0B1117] border border-slate-800/60 rounded-lg p-3 text-center">
+          <p className="text-2xl font-black text-orange-400">{highSeverity}</p>
+          <p className="text-[10px] uppercase tracking-wider text-slate-500 font-bold mt-0.5">High-Risk Events</p>
+        </div>
+        <div className="bg-[#0B1117] border border-slate-800/60 rounded-lg p-3 text-center">
+          <p className="text-2xl font-black text-white">{sectorCount}</p>
+          <p className="text-[10px] uppercase tracking-wider text-slate-500 font-bold mt-0.5">Active Sectors</p>
+        </div>
+      </div>
+
+      {/* Security Posture Scorecard */}
+      <div>
+        <SectionHeader textCls="text-violet-400" title="Collective Security Posture" icon={
+          <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
+        } />
+        <div className="space-y-3 bg-[#0B1117] border border-slate-800/50 rounded-lg p-4">
+          {[
+            { label: 'Incident Disclosure Rate', score: 78, note: 'Above SEC mandate threshold' },
+            { label: 'Mean Time to Disclose', score: 62, note: '~6.2 days avg from detection to filing' },
+            { label: 'Regulatory Compliance', score: 85, note: 'High SEC cybersecurity rule conformance' },
+            { label: 'Recurrence Risk', score: 41, note: 'Repeat incidents within 18-month window' },
+          ].map(item => (
+            <div key={item.label} className="space-y-1">
+              <div className="flex justify-between items-center">
+                <span className="text-xs text-slate-300">{item.label}</span>
+                <span className="text-xs font-bold text-violet-400">{item.score}%</span>
+              </div>
+              <div className="h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                <div className="h-full rounded-full bg-violet-500" style={{ width: `${item.score}%` }} />
+              </div>
+              <p className="text-[10px] text-slate-600">{item.note}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Attack Surface */}
+      <div>
+        <SectionHeader textCls="text-violet-400" title="Collective Attack Surface Map" icon={
+          <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+          </svg>
+        } />
+        <div className="grid grid-cols-2 gap-2">
+          {[
+            { label: 'Cloud Infrastructure', risk: 'HIGH',     icon: '☁️' },
+            { label: 'SaaS Applications',   risk: 'HIGH',     icon: '🔗' },
+            { label: 'Third-Party APIs',    risk: 'CRITICAL', icon: '⚡' },
+            { label: 'Remote Access (VPN)', risk: 'CRITICAL', icon: '🔐' },
+            { label: 'Email Gateways',      risk: 'ELEVATED', icon: '📧' },
+            { label: 'Legacy On-Premise',   risk: 'ELEVATED', icon: '🏛️' },
+          ].map(surface => {
+            const rCls: Record<string, string> = {
+              CRITICAL: 'text-red-400 bg-red-500/10 border-red-500/30',
+              HIGH:     'text-orange-400 bg-orange-500/10 border-orange-500/30',
+              ELEVATED: 'text-yellow-400 bg-yellow-500/10 border-yellow-500/30',
+            };
+            return (
+              <div key={surface.label} className="bg-[#0B1117] border border-slate-800/60 rounded-lg p-3 flex items-center gap-2.5">
+                <span className="text-base shrink-0">{surface.icon}</span>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[11px] font-semibold text-white truncate">{surface.label}</p>
+                  <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded border ${rCls[surface.risk]}`}>{surface.risk}</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Disclosure History */}
+      <div>
+        <SectionHeader textCls="text-violet-400" title="Disclosure History Pattern" icon={
+          <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+          </svg>
+        } />
+        <div className="space-y-2">
+          {[
+            { status: 'SEC 8-K Filed',        count: Math.round(companyCount * 0.6),  textCls: 'text-green-400',  barCls: 'bg-green-500'  },
+            { status: 'CISA Notified',         count: Math.round(companyCount * 0.45), textCls: 'text-cyan-400',   barCls: 'bg-cyan-500'   },
+            { status: 'Pending Disclosure',    count: Math.round(companyCount * 0.15), textCls: 'text-yellow-400', barCls: 'bg-yellow-500' },
+            { status: 'Under Investigation',   count: Math.round(companyCount * 0.1),  textCls: 'text-red-400',    barCls: 'bg-red-500'    },
+          ].map(item => (
+            <div key={item.status} className="flex items-center gap-3">
+              <span className={`${item.textCls} font-bold text-xs w-36 shrink-0`}>{item.status}</span>
+              <div className="flex-1 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                <div className={`h-full ${item.barCls} rounded-full`} style={{ width: `${companyCount > 0 ? Math.round((item.count / companyCount) * 100) : 0}%` }} />
+              </div>
+              <span className="text-slate-500 w-6 text-right text-xs shrink-0">{item.count}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Recovery Donut */}
+      <div className="bg-[#0B1117] border border-violet-500/20 rounded-lg p-4">
+        <p className="text-[10px] uppercase tracking-wider text-violet-400 font-bold mb-3">Portfolio Recovery Progress</p>
+        <div className="flex items-center gap-5">
+          <div className="relative w-16 h-16 shrink-0">
+            <svg viewBox="0 0 36 36" className="w-full h-full -rotate-90">
+              <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#1e293b" strokeWidth="3.5" />
+              <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#8b5cf6" strokeWidth="3.5" strokeDasharray="68, 100" />
+            </svg>
+            <span className="absolute inset-0 flex items-center justify-center text-xs font-black text-violet-400">68%</span>
+          </div>
+          <div className="space-y-1 text-xs">
+            <div><span className="text-green-400 font-bold">Fully Recovered:</span> <span className="text-slate-400">42% of organizations</span></div>
+            <div><span className="text-yellow-400 font-bold">Partial Recovery:</span> <span className="text-slate-400">26% still in remediation</span></div>
+            <div><span className="text-red-400 font-bold">Active Incident:</span> <span className="text-slate-400">32% ongoing containment</span></div>
+          </div>
+        </div>
+      </div>
+
+      {/* Governance */}
+      <div>
+        <GovernanceSectionHeader textCls="text-violet-400" />
+        <div className="space-y-2">
+          <GovernanceCard authority="SEC EDGAR — Disclosure Repository" role="Official filing system for public company cyber incident disclosures under the 2023 SEC Cybersecurity Rules." mandatory impact="Organizations with material incidents must file 8-K within 4 business days. Delays trigger SEC inquiry and investor litigation exposure." />
+          <GovernanceCard authority="CVE Program — Vulnerability Registry" role="Publicly identifies and catalogs software vulnerabilities used to breach tracked organizations." mandatory={false} impact="CVE mapping links known vulnerabilities to organization breach vectors, enabling targeted remediation prioritization by portfolio managers." />
+        </div>
+      </div>
+
+      <AnalystInsight
+        borderCls="border-violet-500" bgCls="bg-violet-950/20" iconCls="text-violet-400" labelCls="text-violet-400"
+        text="The collective attack surface analysis reveals systemic over-reliance on third-party API integrations without adequate security validation gates. Organizations with the lowest recurrence rates share one attribute: a fully automated patch deployment pipeline with a sub-48-hour SLA for critical vulnerabilities. This single capability delivers the highest measurable return on security investment in the current threat environment."
+      />
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PANEL 7 — HIGH SEVERITY INTELLIGENCE  (panelType: "payment_flow")
+// Accent: Red / Crimson
+// ═══════════════════════════════════════════════════════════════
+
+function HighSeverityPanel({ metrics, analytics }: { metrics: any; analytics: any }) {
+  const highSeverity = Number(metrics?.high_severity || 0);
+  const total = Math.max(Number(metrics?.total_incidents || 1), 1);
+  const highPct = Math.round((highSeverity / total) * 100);
+  const breakdown: Record<string, number> = analytics?.severity_breakdown || {};
+  const criticalCount = Number(breakdown['Critical'] || breakdown['critical'] || 0);
+  const riskScore = Math.min(95, highPct + 40);
+
+  return (
+    <div className="space-y-6 pt-2">
+      <div className="space-y-2">
+        <p className="text-[10px] font-bold uppercase tracking-widest text-red-400">High Severity Intelligence · Critical Risk Assessment</p>
+        <h2 className="text-2xl font-black text-white tracking-tight">High-Severity<br /><span className="text-red-400">Threat Assessment</span></h2>
+        <div className="h-px bg-gradient-to-r from-red-500/60 to-transparent" />
+      </div>
+
+      {/* Critical Spotlight */}
+      <div className="relative bg-red-950/30 border border-red-500/40 rounded-xl p-5 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent pointer-events-none" />
+        <div className="relative z-10 flex items-center gap-6">
+          <div className="text-center">
+            <p className="text-6xl font-black text-red-400">{highSeverity}</p>
+            <p className="text-[10px] uppercase tracking-wider text-red-500 font-bold mt-1">High+ Incidents</p>
+          </div>
+          <div className="w-px h-16 bg-red-500/20 shrink-0" />
+          <div className="space-y-1.5 text-xs">
+            <p className="text-slate-400"><span className="text-white font-bold">{highPct}%</span> of all tracked incidents</p>
+            <p className="text-slate-400"><span className="text-red-400 font-bold">{criticalCount}</span> classified as Critical severity</p>
+            <p className="text-slate-400">Avg breach cost: <span className="text-white font-bold">$4.88M</span></p>
+          </div>
+        </div>
+      </div>
+
+      {/* Risk Meter */}
+      <RiskMeter
+        score={riskScore}
+        label={riskScore >= 80 ? 'Portfolio Risk: Critically Elevated — Immediate Board Escalation Required' : 'Portfolio Risk: Elevated — Enhanced Monitoring Active'}
+      />
+
+      {/* Severity Intelligence */}
+      <div>
+        <SectionHeader textCls="text-red-400" title="Severity Intelligence Breakdown" icon={
+          <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+          </svg>
+        } />
+        <div className="space-y-2">
+          {Object.entries(breakdown).map(([sev, count]) => (
+            <div key={sev} className="bg-[#0B1117] border border-slate-800/60 rounded-lg p-3 flex items-center gap-3">
+              <SeverityBadge severity={String(sev)} />
+              <div className="flex-1">
+                <div className="h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                  <div className="h-full bg-red-500/70 rounded-full" style={{ width: `${Math.round((Number(count) / total) * 100)}%` }} />
+                </div>
+              </div>
+              <span className="text-sm font-black text-white shrink-0">{Number(count)}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Response Metrics */}
+      <div className="grid grid-cols-2 gap-3">
+        {[
+          { label: 'Mean Response Time', value: '4.2 hrs', sub: '↑ 18% above SLA', subCls: 'text-red-400' },
+          { label: 'Mean Time to Contain', value: '22 hrs',  sub: 'Improved vs Q2',    subCls: 'text-green-400' },
+          { label: 'Escalation to DFIR',  value: '34%',     sub: 'Require external IR', subCls: 'text-slate-500' },
+          { label: 'Regulatory Triggers', value: String(Math.round(highSeverity * 0.7)), sub: 'SEC/CISA filings required', subCls: 'text-slate-500' },
+        ].map(s => (
+          <div key={s.label} className="bg-[#0B1117] border border-slate-800/60 rounded-lg p-4">
+            <p className="text-[10px] uppercase tracking-wider text-slate-500 font-bold mb-1">{s.label}</p>
+            <p className="text-2xl font-black text-white">{s.value}</p>
+            <p className={`text-[11px] mt-0.5 ${s.subCls}`}>{s.sub}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Most Dangerous + Operational Impact */}
+      <div className="space-y-3">
+        <div className="relative p-4 bg-red-950/20 border border-red-500/30 rounded-xl">
+          <p className="text-[10px] uppercase tracking-wider text-red-400 font-bold mb-1.5">Most Dangerous Category</p>
+          <p className="text-lg font-black text-white">Double Extortion Ransomware</p>
+          <p className="text-xs text-slate-400 mt-1 leading-relaxed">Encryption + exfiltration + public leak site threat. Avg demand: $5.2M. 72% of victims pay partial ransom within 48 hours.</p>
+        </div>
+        <div className="bg-[#0B1117] border border-orange-500/20 rounded-lg p-4">
+          <p className="text-[10px] uppercase tracking-wider text-orange-400 font-bold mb-2">Operational Impact</p>
+          <p className="text-sm text-slate-300 leading-relaxed">High-severity incidents cause an average <strong className="text-white">72-hour</strong> system downtime — equivalent to <strong className="text-orange-300">$5.6M</strong> in operational losses. Customer data exposure triggers mandatory breach notifications across potentially millions of affected individuals under state and federal law.</p>
+        </div>
+      </div>
+
+      {/* Priority Actions */}
+      <div>
+        <SectionHeader textCls="text-red-400" title="Priority Recommended Actions" icon={
+          <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        } />
+        <div className="space-y-2">
+          {[
+            { action: 'Activate elevated monitoring posture for all high-severity target organizations', priority: 'P0' },
+            { action: 'Pre-stage DFIR retainer with 24-hour deployment SLA', priority: 'P0' },
+            { action: 'Mandatory privileged credential rotation across all affected sectors', priority: 'P1' },
+            { action: 'File SEC Form 8-K for material incidents within 4 business days', priority: 'P1' },
+            { action: 'Complete CISA CIRCIA assessment for critical infrastructure incidents', priority: 'P2' },
+          ].map(item => {
+            const pCls: Record<string, string> = {
+              P0: 'bg-red-500/20 text-red-400 border-red-500/30',
+              P1: 'bg-orange-500/20 text-orange-400 border-orange-500/30',
+              P2: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
+            };
+            return (
+              <div key={item.action} className="flex items-start gap-3 bg-[#0B1117] border border-slate-800/60 rounded-lg p-3">
+                <span className={`text-[9px] font-black px-1.5 py-0.5 rounded border shrink-0 mt-0.5 ${pCls[item.priority]}`}>{item.priority}</span>
+                <span className="text-xs text-slate-300 leading-relaxed">{item.action}</span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Governance */}
+      <div>
+        <GovernanceSectionHeader textCls="text-red-400" />
+        <div className="space-y-2">
+          <GovernanceCard authority="SEC — Material Incident Disclosure (Form 8-K)" role="Mandates public company disclosure of material cybersecurity incidents within 4 business days of materiality determination." mandatory impact="All high-severity incidents require SEC materiality assessment. Under-reporting carries enforcement penalties and director liability." />
+          <GovernanceCard authority="FIRST — CVSS Severity Methodology" role="Provides the quantitative scoring system underlying all Critical/High/Medium/Low severity classifications." mandatory={false} impact="CVSS 9.0–10.0 = Critical. These require immediate cross-reference with the CISA KEV catalog for active exploitation status." />
+          <GovernanceCard authority="CISA — CIRCIA Incident Reporting" role="Mandates 72-hour cyber incident reporting and 24-hour ransom payment reporting for covered critical infrastructure entities." mandatory impact="Critical infrastructure operators must comply with CIRCIA. Failure to report carries civil penalties up to $100K/day." />
+        </div>
+      </div>
+
+      <AnalystInsight
+        borderCls="border-red-500" bgCls="bg-red-950/20" iconCls="text-red-400" labelCls="text-red-400"
+        text="The concentration of high-severity incidents among organizations with incomplete zero-trust implementations is not coincidental — perimeter-only security architectures are architecturally incompatible with the current threat environment. Immediate investment in network microsegmentation and privileged access management delivers the highest risk reduction per security dollar. Every unpatched external-facing system is a standing invitation to ransomware operators with automated scanning capabilities."
+      />
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PANEL 8 — EXECUTIVE BRIEFING  (panelType: "ai_insights")
+// Accent: Fuchsia
+// ═══════════════════════════════════════════════════════════════
+
+function ExecutiveBriefingPanel({ metrics, analytics }: { metrics: any; analytics: any }) {
+  const totalIncidents = Number(metrics?.total_incidents || 0);
+  const highSeverity   = Number(metrics?.high_severity   || 0);
+  const highPct = totalIncidents > 0 ? Math.round((highSeverity / totalIncidents) * 100) : 0;
+  const topSector = analytics?.sector_breakdown
+    ? String(Object.entries(analytics.sector_breakdown as Record<string, number>).sort((a, b) => Number(b[1]) - Number(a[1]))[0]?.[0] || 'Finance')
+    : 'Finance';
+  const topMonth = analytics?.monthly_trend
+    ? String(Object.entries(analytics.monthly_trend as Record<string, number>).sort((a, b) => Number(b[1]) - Number(a[1]))[0]?.[0] || 'Recent Period')
+    : 'Recent Period';
+
+  return (
+    <div className="space-y-6 pt-2">
+      {/* Header */}
+      <div className="space-y-2">
+        <div className="flex items-center gap-2">
+          <div className="w-5 h-5 rounded-full bg-fuchsia-500/20 border border-fuchsia-500/30 flex items-center justify-center">
+            <div className="w-1.5 h-1.5 rounded-full bg-fuchsia-400 animate-pulse" />
+          </div>
+          <p className="text-[10px] font-bold uppercase tracking-widest text-fuchsia-400">Board-Level Briefing · Executive Intelligence Assessment</p>
+        </div>
+        <h2 className="text-2xl font-black text-white tracking-tight">Executive<br /><span className="text-fuchsia-400">Intelligence Assessment</span></h2>
+        <p className="text-[11px] text-slate-600 font-mono">Prepared by SOC Intelligence Engine · {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+        <div className="h-px bg-gradient-to-r from-fuchsia-500/60 to-transparent" />
+      </div>
+
+      {/* Executive KPIs */}
+      <div className="grid grid-cols-2 gap-3">
+        <div className="col-span-2 bg-fuchsia-950/20 border border-fuchsia-500/30 rounded-xl p-4 flex items-center justify-between gap-4">
+          <div>
+            <p className="text-[10px] uppercase tracking-wider text-fuchsia-400 font-bold mb-0.5">Current Cyber Posture</p>
+            <p className="text-3xl font-black text-white">ELEVATED</p>
+            <p className="text-xs text-slate-400 mt-1">Enhanced board oversight strongly recommended</p>
+          </div>
+          <div className="text-right shrink-0">
+            <p className="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Confidence</p>
+            <p className="text-2xl font-black text-fuchsia-400">91%</p>
+          </div>
+        </div>
+        <div className="bg-[#0B1117] border border-slate-800/60 rounded-lg p-4">
+          <p className="text-[10px] uppercase tracking-wider text-slate-500 font-bold mb-1">Intelligence Events</p>
+          <p className="text-3xl font-black text-white">{totalIncidents}</p>
+        </div>
+        <div className="bg-[#0B1117] border border-slate-800/60 rounded-lg p-4">
+          <p className="text-[10px] uppercase tracking-wider text-slate-500 font-bold mb-1">High-Severity Rate</p>
+          <p className="text-3xl font-black text-orange-400">{highPct}%</p>
+        </div>
+      </div>
+
+      {/* Cyber Landscape */}
+      <div>
+        <SectionHeader textCls="text-fuchsia-400" title="Current Cyber Landscape" icon={
+          <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        } />
+        <p className="text-sm text-slate-300 leading-relaxed bg-[#0B1117] p-4 rounded-lg border border-slate-800/50">
+          The global threat landscape has entered a <span className="text-fuchsia-400 font-semibold">high-intensity operational phase</span> characterized
+          by sophisticated ransomware syndicates operating with near-nation-state tooling. Intelligence confirms{' '}
+          <strong className="text-white">{topSector}</strong> as the primary targeted sector with peak activity recorded in{' '}
+          <strong className="text-white">{topMonth}</strong>. AI-assisted attack tooling has materially reduced the cost of launching
+          precision attacks against organizations previously considered low-value targets.
+        </p>
+      </div>
+
+      {/* Operational Impact */}
+      <div>
+        <SectionHeader textCls="text-fuchsia-400" title="Operational Impact Assessment" icon={
+          <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        } />
+        <div className="space-y-2">
+          {[
+            { label: 'Business Continuity Risk', level: 'HIGH',     desc: 'Average 72-hour system downtime per critical incident' },
+            { label: 'Financial Exposure',        level: 'CRITICAL', desc: '$4.88M avg breach cost across monitored organizations' },
+            { label: 'Regulatory Liability',      level: 'HIGH',     desc: 'SEC + CISA + state breach law disclosure obligations active' },
+            { label: 'Reputational Risk',         level: 'ELEVATED', desc: 'Public disclosure requirements amplify media and investor exposure' },
+          ].map(item => {
+            const lCls: Record<string, string> = {
+              CRITICAL: 'text-red-400 bg-red-500/10 border-red-500/30',
+              HIGH:     'text-orange-400 bg-orange-500/10 border-orange-500/30',
+              ELEVATED: 'text-yellow-400 bg-yellow-500/10 border-yellow-500/30',
+            };
+            return (
+              <div key={item.label} className="flex items-center gap-3 bg-[#0B1117] border border-slate-800/50 rounded-lg p-3">
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-bold text-white">{item.label}</p>
+                  <p className="text-[11px] text-slate-500 leading-snug">{item.desc}</p>
+                </div>
+                <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full border shrink-0 ${lCls[item.level]}`}>{item.level}</span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Industry Comparison */}
+      <div className="bg-[#0B1117] border border-fuchsia-500/20 rounded-xl p-4">
+        <p className="text-[10px] uppercase tracking-wider text-fuchsia-400 font-bold mb-3">Industry Comparison Metrics</p>
+        <div className="space-y-2">
+          {[
+            { label: 'Incident Rate vs. Sector Average', value: '+14%',   cls: 'text-orange-400' },
+            { label: 'Disclosure Compliance Rate',        value: '78%',    cls: 'text-green-400'  },
+            { label: 'Time to Disclose vs. Mandate',      value: '6.2d',   cls: 'text-yellow-400' },
+            { label: 'Recurrence Rate (18-month window)', value: '32%',    cls: 'text-red-400'    },
+            { label: 'Avg Breach Cost vs. Industry',      value: '$4.88M', cls: 'text-white'      },
+          ].map(stat => (
+            <div key={stat.label} className="flex justify-between items-center text-xs">
+              <span className="text-slate-400">{stat.label}</span>
+              <span className={`font-bold ${stat.cls}`}>{stat.value}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Board Priorities */}
+      <div>
+        <SectionHeader textCls="text-fuchsia-400" title="Board Recommended Priorities" icon={
+          <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        } />
+        <div className="space-y-2">
+          {[
+            'Mandate zero-trust architecture rollout across all external-facing infrastructure within 90 days',
+            'Establish a Board Cybersecurity Committee with quarterly threat briefing cadence',
+            'Engage legal counsel proactively for SEC materiality determination on all high-severity events',
+            'Fund a 24/7 SOC retainer with sub-4-hour DFIR deployment capability',
+            'Implement mandatory cyber training for all executives — social engineering remains the #1 initial access vector',
+          ].map((priority, i) => (
+            <div key={i} className="flex items-start gap-3">
+              <span className="w-6 h-6 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/30 text-fuchsia-400 text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">{i + 1}</span>
+              <span className="text-xs text-slate-300 leading-relaxed">{priority}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Expected Developments */}
+      <div className="relative p-5 bg-fuchsia-950/20 border border-fuchsia-500/30 rounded-xl overflow-hidden">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-fuchsia-500/10 blur-2xl rounded-full pointer-events-none" />
+        <p className="text-[10px] uppercase tracking-wider text-fuchsia-400 font-bold mb-2 relative z-10">Expected Next Developments</p>
+        <p className="text-sm text-slate-300 leading-relaxed relative z-10">
+          Intelligence projections indicate a <strong className="text-fuchsia-300">18–24% increase</strong> in high-severity incidents over the next two quarters, driven by AI-accelerated attack tooling and continued supply chain exploitation. SEC enforcement actions for disclosure violations are expected to increase by <strong className="text-white">40%</strong>, creating significant legal risk for non-compliant organizations.
+        </p>
+      </div>
+
+      {/* Confidence */}
+      <ConfidenceMeter value={91} barCls="bg-fuchsia-500" />
+
+      {/* Governance */}
+      <div>
+        <GovernanceSectionHeader textCls="text-fuchsia-400" />
+        <div className="space-y-2">
+          <GovernanceCard authority="SEC — Cybersecurity Risk Governance Rules" role="Requires board-level oversight of cybersecurity risk management and annual disclosure of cyber risk strategy in Form 10-K." mandatory impact="This briefing directly supports board governance obligations. Annual 10-K cybersecurity disclosures must align with this executive assessment." />
+          <GovernanceCard authority="NIST — Cybersecurity Framework 2.0" role="The globally adopted framework for enterprise cybersecurity governance including the new dedicated 'Govern' function." mandatory={false} impact="All recommended board priorities align to NIST CSF 2.0 Govern and Respond functions. CSF adoption reduces avg breach cost by an estimated 18%." />
+          <GovernanceCard authority="GDELT — Global Event Intelligence" role="Provides geopolitical event monitoring correlated with cyber incident spikes and threat actor activation signals." mandatory={false} impact="GDELT data underpins the threat forecast projections and peak activity analysis referenced throughout this briefing." />
+          <GovernanceCard authority="SEC EDGAR — Official Disclosure Archive" role="Primary data source for public company cyber incident disclosures powering this intelligence dashboard." mandatory impact="All tracked incidents originate from or are corroborated by official EDGAR filings, ensuring ground-truth accuracy." />
+        </div>
+      </div>
+
+      <AnalystInsight
+        borderCls="border-fuchsia-500" bgCls="bg-fuchsia-950/20" iconCls="text-fuchsia-400" labelCls="text-fuchsia-400"
+        text="The convergence of AI-powered attack tooling, geopolitical instability, and increasingly aggressive regulatory enforcement has created an unprecedented risk environment for publicly traded organizations. Boards that continue treating cybersecurity as an IT function rather than a governance imperative will face both material financial losses and regulatory sanctions. The organizations that emerge strongest share one defining characteristic: proactive intelligence-driven security programs with clear board-level accountability and pre-tested incident response playbooks."
+      />
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
+// MAIN COMPONENT
+// ═══════════════════════════════════════════════════════════════
+
+export default function IntelligenceSidebar({
+  isOpen, onClose, metrics, analytics, selectedItem, panelType = 'incident',
+}: IntelligenceSidebarProps) {
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
+  if (!isOpen) return null;
+
+  const renderPanelContent = () => {
+    switch (panelType) {
+      case 'incident':              return <IncidentPanel selectedItem={selectedItem} />;
+      case 'ai_insights':           return <ExecutiveBriefingPanel metrics={metrics} analytics={analytics} />;
+      case 'connected_institutions':return <CompanyIntelligencePanel metrics={metrics} analytics={analytics} />;
+      case 'payment_flow':          return <HighSeverityPanel metrics={metrics} analytics={analytics} />;
+      case 'sector_analytics':      return <SectorIntelligencePanel metrics={metrics} analytics={analytics} />;
+      case 'chart_severity':        return <SeverityAnalysisPanel metrics={metrics} analytics={analytics} />;
+      case 'chart_trend':           return <MonthlyTrendPanel analytics={analytics} />;
+      case 'chart_sector':          return <SectorMatrixPanel analytics={analytics} />;
+      default:
+        return (
+          <div className="flex flex-col items-center justify-center h-full text-center space-y-4 text-slate-500 mt-20">
+            <div className="w-16 h-16 rounded-full bg-slate-900 flex items-center justify-center border border-slate-800">
+              <svg className="w-8 h-8 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <p>Select an entity from the dashboard to view executive intelligence.</p>
+          </div>
+        );
+    }
+  };
+
+  return (
+    <>
+      {/* Backdrop */}
+      <div
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 transition-opacity"
+        onClick={onClose}
+      />
+
+      {/* Slide-in Panel */}
+      <div className={`fixed top-0 right-0 h-full w-full sm:w-[480px] lg:w-[520px] z-50 bg-[#030712] border-l border-slate-800/80 shadow-[0_0_60px_rgba(0,0,0,0.9)] flex flex-col transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+
+        {/* Close Header */}
+        <div className="flex items-center justify-end p-4 border-b border-slate-800/50 shrink-0">
+          <button
+            onClick={onClose}
+            className="text-slate-500 hover:text-white transition-colors bg-slate-900 hover:bg-slate-800 p-2 rounded-full border border-slate-800"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Scrollable Content */}
+        <div className="flex-1 overflow-y-auto px-6 pb-10 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-800 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-slate-600">
+          {renderPanelContent()}
+        </div>
+      </div>
+    </>
+  );
+}
+</file>
+
+<file path="README.md">
+# Cyber Incident Disclosure Tracker
+
+A Infocreon Internship – Cyber Incident Disclosure Tracker Proof of Concept focused on monitoring publicly disclosed cyber incidents, sector exposure, and cyber-risk intelligence patterns across critical infrastructure ecosystems.
+
+---
+
+# Overview
+
+CyberRail Intelligence is a production-style cyber intelligence dashboard designed to simulate how modern threat monitoring systems visualize disclosure patterns, sector targeting trends, and operational cyber risk.
+
+The platform transforms raw incident disclosures into actionable intelligence using dynamic analytics, risk scoring, timeline tracking, and contextual intelligence summaries.
+
+---
+
+# Core Features
+
+* Real-time Intelligence Dashboard
+* Dynamic Risk Assessment Engine
+* Cyber Risk Index
+* Sector Exposure Analytics
+* Severity Distribution Visualization
+* Incident Timeline Tracking
+* Intelligence Summary Generation
+* Threat Outlook Monitoring
+* Dynamic Filtering System
+* Exportable Dataset
+* Responsive Analyst Interface
+* Intelligence Sidebar
+* Empty-State Handling
+* Loading-State Handling
+
+---
+
+# Technology Stack
+
+## Frontend
+
+* Next.js
+* TypeScript
+* Tailwind CSS
+* Recharts
+
+## Backend
+
+* FastAPI
+* Pandas
+* Python
+
+---
+
+# Intelligence Layer
+
+The intelligence layer derives analytical insights from incident data and transforms them into operational summaries.
+
+### Capabilities
+
+* Sector dominance detection
+* Severity trend analysis
+* Cyber risk scoring
+* Threat outlook generation
+* Timeline pattern recognition
+* Dynamic intelligence summaries
+
+---
+
+# Data Sources
+
+The project architecture integrates with public cyber disclosure ecosystems, currently supporting configuration for:
+
+* **SEC EDGAR Filings**: Regulatory disclosure source used to track official cyber incident filings (e.g., 8-K forms) from publicly traded companies.
+* **GDELT Event Streams**: Global event and news intelligence source used to monitor worldwide media for cyber incidents and data breaches in real-time.
+
+> Current implementation uses synthetic demo datasets for simulation purposes, but the architecture supports live ingestion from the configured sources.
+
+---
+
+# Architecture
+
+Frontend → FastAPI API → Analytics Layer → Incident Dataset
+
+## Frontend Responsibilities
+
+* Data visualization
+* Filtering
+* Dashboard rendering
+* Responsive UI
+* Chart rendering
+* User interactions
+
+## Backend Responsibilities
+
+* API endpoints
+* Dataset generation
+* Analytics computation
+* Risk scoring
+* Intelligence aggregation
+
+---
+
+# API Endpoints
+
+| Endpoint         | Description                  |
+| ---------------- | ---------------------------- |
+| `/api/incidents` | Returns incident dataset     |
+| `/api/metrics`   | Returns KPI metrics          |
+| `/api/analytics` | Returns analytical summaries |
+| `/api/download`  | Downloads incident dataset   |
+
+---
+
+# Setup Instructions
+
+## Environment Configuration
+
+The application uses environment variables to configure intelligence data sources. To set this up:
+
+1. Copy the `.env.example` file to `.env.local`:
+   ```bash
+   cp .env.example .env.local
+   ```
+2. Update `.env.local` with your configuration.
+
+**Configurable Sources:**
+- **SEC EDGAR:** Requires `SEC_EDGAR_API_URL` and `SEC_EDGAR_USER_AGENT` for fetching official incident filings.
+- **GDELT:** Requires `GDELT_API_URL` and `GDELT_QUERY` for tracking news-based incident reports.
+
+## Backend
+
+```bash
+cd backend
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+```
+
+Backend runs on:
+
+```bash
+http://127.0.0.1:8000
+```
+
+---
+
+## Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Frontend runs on:
+
+```bash
+http://localhost:3000
+```
+
+---
+
+# Screenshots
+
+See `/screenshots`
+
+Included captures:
+
+* Dashboard Overview
+* Intelligence Sidebar
+* Filters Working
+* Incident Table
+* Download Feature
+
+---
+
+# Validation & Quality
+
+The project successfully passed:
+
+* VAR (Visual Architecture Review)
+* UAT (User Acceptance Testing)
+
+Validated areas include:
+
+* responsiveness
+* filtering
+* edge cases
+* loading states
+* data validation
+* intelligence rendering
+* dashboard consistency
+
+---
+
+# Future Improvements
+
+* Live Threat Feed Integration
+* Real SEC EDGAR Parsing
+* Authentication Layer
+* Analyst Notes System
+* Threat Actor Correlation
+* AI-generated Threat Summaries
+* SIEM Integration
+* Mobile Intelligence Cards
+
+---
+
+# Author
+
+Shahab Ahamed
+
+Infocreon Internship Batch 4 — Intelligence Library PoC
+</file>
+
+</files>

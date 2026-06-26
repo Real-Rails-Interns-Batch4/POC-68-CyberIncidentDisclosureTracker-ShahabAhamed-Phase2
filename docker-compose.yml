@@ -1,0 +1,38 @@
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: cyber_tracker_backend
+    ports:
+      - "8000:8000"
+    environment:
+      - SEC_EDGAR_API_URL=${SEC_EDGAR_API_URL}
+      - SEC_EDGAR_USER_AGENT=${SEC_EDGAR_USER_AGENT}
+      - GDELT_API_URL=${GDELT_API_URL}
+      - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost:3000}
+    networks:
+      - app_network
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        BACKEND_API_URL: http://backend:8000
+    container_name: cyber_tracker_frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - BACKEND_API_URL=http://backend:8000
+    depends_on:
+      - backend
+    networks:
+      - app_network
+    restart: unless-stopped
+
+networks:
+  app_network:
+    driver: bridge

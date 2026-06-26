@@ -124,7 +124,27 @@ The application uses environment variables to configure intelligence data source
 - **SEC EDGAR:** Requires `SEC_EDGAR_API_URL` and `SEC_EDGAR_USER_AGENT` for fetching official incident filings.
 - **GDELT:** Requires `GDELT_API_URL` and `GDELT_QUERY` for tracking news-based incident reports.
 
-## Backend
+## Docker Setup (Recommended)
+
+You can run the entire application stack using Docker Compose:
+
+1. Copy the `.env.example` file to `.env` (or `.env.local` for local dev):
+   ```bash
+   cp .env.example .env
+   ```
+2. Build and start the containers:
+   ```bash
+   docker-compose up -d --build
+   ```
+3. Access the application:
+   - Frontend: `http://localhost:3000`
+   - Backend API: `http://localhost:8000`
+
+---
+
+## Manual Setup
+
+### Backend
 
 ```bash
 cd backend
@@ -140,7 +160,7 @@ http://127.0.0.1:8000
 
 ---
 
-## Frontend
+### Frontend
 
 ```bash
 cd frontend
